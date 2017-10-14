@@ -8,4 +8,21 @@
     tools:context="com.example.hannah.songle.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/PlayButton"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="285dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="55dp"
+        android:layout_height="18dp"
+        android:text="SONGLE"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="119dp" />
 </android.support.constraint.ConstraintLayout>
