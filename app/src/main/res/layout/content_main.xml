@@ -20,9 +20,11 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="55dp"
-        android:layout_height="18dp"
+        android:layout_width="68dp"
+        android:layout_height="36dp"
         android:text="SONGLE"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="119dp" />
+        android:textSize="18sp"
+        android:typeface="sans"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="127dp" />
 </android.support.constraint.ConstraintLayout>
