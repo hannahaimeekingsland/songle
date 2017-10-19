@@ -4,7 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationRequest;
+import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +32,7 @@ public class MapsActivity
     private GoogleApiClient mGoogleApiClient;
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = false;
+    private Location mLastLocation;
     private static final String TAG = "MapsActivity";
 
     @Override
@@ -76,7 +77,7 @@ public class MapsActivity
         //Can we access the user's current location?
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
     }
 
@@ -88,13 +89,13 @@ public class MapsActivity
             System.out.println("IllegalStateException thrown [onConnected");
         }
         //Can we access the user's current location?
-        if (ContextCompact.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
@@ -158,7 +159,8 @@ public class MapsActivity
         } catch (SecurityException se) {
             System.out.println("Security exception thrown [onMapReady]");
         }
-            //Add "My location" button to the user interface
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        }
+        //Add "My location" button to the user interface
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
+}
+
