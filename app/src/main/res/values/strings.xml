@@ -2,5 +2,19 @@
     <string name="app_name">Songle</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="PlayButton">Play</string>
+    <string name="playButton">Play</string>
+    <string name="amateurButton">Amateur</string>
+    <string name="gstButton">Getting Started</string>
+    <string name="fcoButton">Feeling Confident</string>
+    <string name="difficultButton">Difficult</string>
+    <string name="impossibleButton">Impossible</string>
+    <string name="chooseLevel">Choose difficulty level</string>
+    <string name="songleText">Songle</string>
+    <string name="settings">Settings</string>
+    <string name="resumeButton">Resume</string>
+    <string name="wordLiButton">Word List</string>
+    <string name="getHintButton">Get Hint</string>
+    <string name="quitButton">Quit Current Game</string>
+    <string name="mainMenuButton">Main Menu</string>
+    />
 </resources>

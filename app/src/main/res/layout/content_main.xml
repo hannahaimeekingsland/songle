@@ -12,19 +12,19 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/PlayButton"
+        android:background="#cc6618"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/playButton"
         tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="285dp" />
+        tools:layout_editor_absoluteY="303dp" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="68dp"
-        android:layout_height="36dp"
-        android:text="SONGLE"
-        android:textSize="18sp"
+        android:layout_width="62dp"
+        android:layout_height="37dp"
+        android:text="@string/songleText"
+        android:textSize="20sp"
         android:typeface="sans"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="127dp" />
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="148dp" />
 </android.support.constraint.ConstraintLayout>

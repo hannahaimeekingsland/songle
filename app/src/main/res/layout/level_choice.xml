@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#9e9e9e">
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:layout_weight="1"
+        android:background="#cc6618"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="@string/amateurButton" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button6"
+        android:layout_alignStart="@+id/button6"
+        android:layout_below="@+id/button4"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:background="#cc6618"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="@string/gstButton" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/button5"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:background="#cc6618"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="@string/fcoButton" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button6"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#cc6618"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="@string/difficultButton" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button7"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#cc6618"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="@string/impossibleButton" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:text="@string/chooseLevel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"/>
+
+</RelativeLayout>
