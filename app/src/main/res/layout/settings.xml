@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9e9e9e">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-        //android:src="@drawable/wheel.png"/>
 
     <Button
         android:id="@+id/button4"
@@ -84,4 +80,14 @@
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/cross" />
+
 </RelativeLayout>

@@ -44,6 +44,13 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".MainResumed" ></activity>
+        <activity
+            android:name=".ResumedPopup"
+            android:theme="@style/AppTheme.CustomTheme" >
+        </activity>
+
 
     </application>
 
