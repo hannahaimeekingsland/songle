@@ -9,7 +9,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -43,15 +43,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".MainResumed" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainResumed" />
         <activity
             android:name=".ResumedPopup"
-            android:theme="@style/AppTheme.CustomTheme" >
-        </activity>
-
-
+            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity android:name=".NetworkActivity"></activity>
     </application>
 
 </manifest>

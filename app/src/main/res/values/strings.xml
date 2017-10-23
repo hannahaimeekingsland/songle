@@ -16,10 +16,12 @@
     <string name="getHintButton">Get Hint</string>
     <string name="quitButton">Quit Current Game</string>
     <string name="mainMenuButton">Main Menu</string>
-    <string name="resumeButton">Resume</string>
-    <string name="resumeButton">Resume</string>
     <string name="newGameButton">New Game</string>
     <string name="sure">Are you sure you want to start a new game? Your current game will be lost.</string>
     <string name="yesButton">Yes</string>
+    <string name="pref_sync">pref_sync</string>
+    <string name="pref_sync_summ">pref_sync_summ</string>
+    <string name="pref_syncConnectionType">pref_syncConnectionType</string>
+    <string name="pref_syncConnectionTypes_default">pref_syncConnectionTypes_default</string>
     />
 </resources>
