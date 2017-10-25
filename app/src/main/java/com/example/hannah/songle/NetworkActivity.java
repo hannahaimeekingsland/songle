@@ -108,7 +108,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     }
 
 
-    // Implementation of AsyncTask used to download XML feed from stackoverflow.com.
+    // Implementation of AsyncTask used to download XML feed from the webpage.
     private class DownloadXmlTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -129,12 +129,12 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
             myWebView.loadData(result, "text/html", null);
         }
     }
-    // Uploads XML from stackoverflow.com, parses it, and combines it with
-// HTML markup. Returns HTML string.
+    // Uploads XML from the webpage, parses it, and combines it with
+    // HTML markup. Returns HTML string.
     private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
         // Instantiate the parser
-        XmlParser stackOverflowXmlParser = new XmlParser();
+        XmlParser parser = new XmlParser();
         List<XmlParser.Entry> entries = null;
         int number = -1;
         String artist = null;
@@ -163,16 +163,16 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
             }
         }
 
-        // StackOverflowXmlParser returns a List (called "entries") of Entry objects.
+        // XmlParser returns a List (called "entries") of Entry objects.
         // Each Entry object represents a single post in the XML feed.
         // This section processes the entries list to combine each entry with HTML markup.
         // Each entry is displayed in the UI as a link that optionally includes
         // a text summary.
         for (XmlParser.Entry entry : entries) {
-            htmlString.append("<p><a href='");
-            htmlString.append(entry.link);
-            htmlString.append("'>" + entry.title + "</a></p>");
-            htmlString.append(entry.artist);
+            htmlString.append("<Number>" +entry.number + "'</Number>");
+            htmlString.append("<Artist>" +entry.artist + "'</Artist>");
+            htmlString.append("<Title>" + entry.title + "</Title>");
+            htmlString.append("<Link>" + entry.link + "</Link>");
         }
         return htmlString.toString();
     }
