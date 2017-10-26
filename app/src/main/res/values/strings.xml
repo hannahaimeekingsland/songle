@@ -23,5 +23,9 @@
     <string name="pref_sync_summ">pref_sync_summ</string>
     <string name="pref_syncConnectionType">pref_syncConnectionType</string>
     <string name="pref_syncConnectionTypes_default">pref_syncConnectionTypes_default</string>
+    <string name="connection_error">Error with connection</string>
+    <string name="xml_error">Error parsing XML</string>
+    <string name="page_title">Page title</string>
+    <string name="updated">Updated</string>
     />
 </resources>
