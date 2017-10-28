@@ -52,7 +52,12 @@ public class MapsActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
         if (mGoogleApiClient == null) {
-            buildGoogleApiClient();
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+            //mGoogleApiClient.connect();
         }
     }
 
@@ -78,7 +83,12 @@ public class MapsActivity extends AppCompatActivity
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
-                buildGoogleApiClient();
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+                //mGoogleApiClient.connect();
                 mGoogleMap.setMyLocationEnabled(true);
             } else {
                 //Request Location Permission
@@ -86,18 +96,14 @@ public class MapsActivity extends AppCompatActivity
             }
         }
         else {
-            buildGoogleApiClient();
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+            //mGoogleApiClient.connect();
             mGoogleMap.setMyLocationEnabled(true);
         }
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
     }
 
     @Override
@@ -189,7 +195,12 @@ public class MapsActivity extends AppCompatActivity
                             == PackageManager.PERMISSION_GRANTED) {
 
                         if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
+                            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                                    .addConnectionCallbacks(this)
+                                    .addOnConnectionFailedListener(this)
+                                    .addApi(LocationServices.API)
+                                    .build();
+                            //mGoogleApiClient.connect();
                         }
                         mGoogleMap.setMyLocationEnabled(true);
                     }

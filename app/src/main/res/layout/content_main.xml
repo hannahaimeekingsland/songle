@@ -6,25 +6,35 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.hannah.songle.MainActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/activity_main">
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="160dp"
         android:background="#cc6618"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/playButton"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="303dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="62dp"
-        android:layout_height="37dp"
+        android:layout_width="234dp"
+        android:layout_height="121dp"
+        android:layout_marginBottom="118dp"
+        android:layout_marginTop="148dp"
+        android:fontFamily="@font/fredoka_one"
         android:text="@string/songleText"
-        android:textSize="20sp"
+        android:textSize="70sp"
         android:typeface="sans"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="148dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

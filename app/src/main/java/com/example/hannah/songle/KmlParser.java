@@ -8,16 +8,15 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by s1518196 on 23/10/17.
+ * Created by s1518196 on 28/10/17.
  */
 
-public class XmlParser {
+public class KmlParser {
     private static final String ns = null;
 
-    public static ArrayList<Entry> parse(InputStream in) throws XmlPullParserException, IOException {
+    public static ArrayList<KmlParser.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -29,17 +28,18 @@ public class XmlParser {
         }
     }
 
-    private static ArrayList<Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+    private static ArrayList<KmlParser.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        ArrayList<KmlParser.Entry> entries = new ArrayList<KmlParser.Entry>();
 
-        parser.require(XmlPullParser.START_TAG, ns, "Songs");
+        parser.require(XmlPullParser.START_TAG, ns, "Document");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
-            // Starts by looking for the Song tag
-            if (name.equals("Song")) {
+            // Starts by looking for the Style tag
+            if (name.equals("Style")) {
+                //PARSE id
                 entries.add(readEntry(parser));
             } else {
                 skip(parser);
@@ -48,13 +48,10 @@ public class XmlParser {
         return entries;
     }
 
-    public static class Entry {
-        public final String title;
-        public final String link;
-        public final String number;
-        public final String artist;
+    public static class Point {
+        //variables here
 
-        private Entry(String number, String title, String artist, String link) {
+        private Point(String number, String title, String artist, String link) {
             this.number = number;
             this.title = title;
             this.artist = artist;
@@ -62,10 +59,10 @@ public class XmlParser {
         }
     }
 
-    // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them off
+    // Parses the contents of an Point. If it encounters a title, summary, or link tag, hands them off
 // to their respective "read" methods for processing. Otherwise, skips the tag.
-    private static Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, ns, "Song");
+    private static KmlParser.Point readPoint(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(XmlPullParser.START_TAG, ns, "Style");
         String number = null;
         String title = null;
         String artist = null;
@@ -87,7 +84,7 @@ public class XmlParser {
                 skip(parser);
             }
         }
-        return new Entry(number, title, artist, link);
+        return new KmlParser.Point(number, title, artist, link);
     }
 
     private static String readNumber(XmlPullParser parser) throws IOException, XmlPullParserException {
@@ -155,4 +152,6 @@ public class XmlParser {
             }
         }
     }
+}
+
 }
