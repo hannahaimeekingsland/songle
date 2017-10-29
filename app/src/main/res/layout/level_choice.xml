@@ -78,7 +78,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:text="@string/chooseLevel"
-        android:fontFamily="@font/fredoka_one"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"/>

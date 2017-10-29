@@ -81,8 +81,7 @@ public class MapsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
@@ -229,8 +228,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
-        String kml;
+    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<KmlParser.Point>> {
         InputStream kmlInputStream =new ByteArrayInputStream(kml.getBytes(StandardCharsets.UTF_8.name()));
         KmlLayer layer = new KmlLayer(mGoogleMap, kmlInputStream, getApplicationContext());
         layer.addLayerToMap();
@@ -243,7 +241,6 @@ public class MapsActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -251,7 +248,6 @@ public class MapsActivity
     private Location mLastLocation;
     private static final String TAG = "MapsActivity";
     Marker mCurrLocationMarker;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -260,12 +256,10 @@ public class MapsActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         if (mGoogleApiClient == null) {
             buildGoogleApiClient();
         }
     }
-
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -279,7 +273,6 @@ public class MapsActivity
         super.onStart();
         mGoogleApiClient.connect();
     }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -287,22 +280,18 @@ public class MapsActivity
             mGoogleApiClient.disconnect();
         }
     }
-
     protected void createLocationRequest() {
         //Set the parameters for the location request
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000); //preferably every 5 seconds
         mLocationRequest.setFastestInterval(1000); //at most every second
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
         //Can we access the user's current location?
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
     }
-
-
     @Override
     public void onConnected(Bundle connectionHint) {
         try { createLocationRequest(); }
@@ -319,7 +308,6 @@ public class MapsActivity
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
-
     @Override
     public void onLocationChanged(Location current) {
         mLastLocation = current;
@@ -335,38 +323,28 @@ public class MapsActivity
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
-
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
     }
-
    /*@Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
-
     @Override
     public void onProviderEnabled(String provider) {
-
     }
-
     @Override
     public void onProviderDisabled(String provider) {
-
     }
-
     @Override
     public void onConnectionSuspended(int flag) {
         System.out.println(" >>>> onConnectionSuspended");
     }
-
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         //An unresolvable error has occurred and a connection to Google APIs
         // could not be established. Display an error message, or handle the failure silently
         System.out.println(" >>>> onConnectionFailed");
     }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -375,11 +353,9 @@ public class MapsActivity
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -393,7 +369,4 @@ public class MapsActivity
         //Add "My location" button to the user interface
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
-
     */
-
-
