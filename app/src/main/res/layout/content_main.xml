@@ -37,4 +37,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="32dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/whitewheel"
+        tools:layout_editor_absoluteX="346dp"
+        tools:layout_editor_absoluteY="5dp" />
+
 </android.support.constraint.ConstraintLayout>

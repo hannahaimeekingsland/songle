@@ -8,6 +8,7 @@ import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -41,6 +48,8 @@ public class MapsActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    KmlLayer layer;
+    InputStream kmlInputStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,7 @@ public class MapsActivity extends AppCompatActivity
             //mGoogleApiClient.connect();
             mGoogleMap.setMyLocationEnabled(true);
         }
+
     }
 
     @Override
@@ -219,6 +229,12 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
+    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
+        String kml;
+        InputStream kmlInputStream =new ByteArrayInputStream(kml.getBytes(StandardCharsets.UTF_8.name()));
+        KmlLayer layer = new KmlLayer(mGoogleMap, kmlInputStream, getApplicationContext());
+        layer.addLayerToMap();
+    }
 }
 /*
 public class MapsActivity

@@ -47,7 +47,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_network);
+        //setContentView(R.layout.activity_network);
         mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
     }
 
@@ -120,10 +120,13 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
 
         @Override
         protected void onPostExecute(ArrayList<XmlParser.Entry> result) {
-            setContentView(R.layout.activity_main);
+            //setContentView(R.layout.activity_main);
             System.out.println("<Song>");
             for (XmlParser.Entry e : result) {
-                System.out.println(e.toString());
+                System.out.println(e.number);
+                System.out.println(e.artist);
+                System.out.println(e.title);
+                System.out.println(e.link);
             }
             System.out.println("</Song>");
         }
