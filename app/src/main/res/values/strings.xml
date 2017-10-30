@@ -27,5 +27,9 @@
     <string name="xml_error">Error parsing XML</string>
     <string name="page_title">Page title</string>
     <string name="updated">Updated</string>
+    <string name="newword">Congratulations! You have collected a new word.</string>
+    <string name="guessStr">Guess</string>
+    <string name="guessPrompt">Your guess:</string>
+    <string name="guessButton">Guess!</string>
     />
 </resources>

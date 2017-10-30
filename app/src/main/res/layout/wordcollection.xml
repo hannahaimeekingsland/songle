@@ -9,10 +9,11 @@
         android:id="@+id/textView3"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="222dp"
-        android:text="@string/sure" />
+        android:layout_marginEnd="66dp"
+        android:layout_marginTop="220dp"
+        android:text="@string/newword" />
 
     <Button
         android:id="@+id/button9"
@@ -27,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_marginBottom="48dp"
-        android:layout_marginStart="34dp"
+        android:layout_marginBottom="35dp"
+        android:layout_marginStart="17dp"
         android:layout_toEndOf="@+id/button9"
         app:srcCompat="@drawable/cross" />
 </RelativeLayout>

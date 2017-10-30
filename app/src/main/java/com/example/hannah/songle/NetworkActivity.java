@@ -131,5 +131,26 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
             System.out.println("</Song>");
         }
     }
+/*
+    // Implementation of AsyncTask used to download XML feed from the webpage.
+    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
+        @Override
+        protected ArrayList<XmlParser.Entry> doInBackground(String... urls) {
+            try {
+                InputStream stream = new ByteArrayInputStream(urls[0].getBytes(StandardCharsets.UTF_8.name()));
+                XmlParser xml_parser = new XmlParser();
+                return xml_parser.parse(stream);
+            } catch (IOException e) {
+                return null;
+            } catch (XmlPullParserException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<XmlParser.Entry> result) {
+            //setContentView(R.layout.activity_main);
+        }
+    }*/
 }
 

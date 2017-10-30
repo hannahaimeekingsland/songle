@@ -38,9 +38,8 @@ public class KmlParser {
                 continue;
             }
             String name = parser.getName();
-            // Starts by looking for the Style tag
+            // Starts by looking for the Placemark tag
             if (name.equals("Placemark")) {
-                //PARSE id
                 points.add(readPoint(parser));
             } else {
                 skip(parser);

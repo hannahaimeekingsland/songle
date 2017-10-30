@@ -1,25 +1,30 @@
 package com.example.hannah.songle;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,11 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -68,6 +70,17 @@ public class MapsActivity extends AppCompatActivity
                     .build();
             //mGoogleApiClient.connect();
         }
+        /*ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
+        // set a onclick listener for when the button gets clicked
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            // Start new list activity
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(MapsActivity.this, SettingsScreen.class);
+                startActivity(mainIntent);
+            }
+        });*/
+        findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
+
     }
 
     @Override
@@ -160,10 +173,6 @@ public class MapsActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            // Show an explanation to the user *asynchronously* -- don't block
-// this thread waiting for the user's response! After the user
-// sees the explanation, try again to request the permission.
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
@@ -228,10 +237,53 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
+/*
     private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<KmlParser.Point>> {
         InputStream kmlInputStream =new ByteArrayInputStream(kml.getBytes(StandardCharsets.UTF_8.name()));
         KmlLayer layer = new KmlLayer(mGoogleMap, kmlInputStream, getApplicationContext());
         layer.addLayerToMap();
+    }*/
+
+
+//I have no idea what I'm doing here
+
+    private class HandleClick implements View.OnClickListener {
+        public void onClick(View arg0) {
+            enableGuess();
+        }
+    }
+
+    private void enableGuess(){
+        //We need to get the instance of the LayoutInflater, use the context of this activity
+        LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
+        View layout = inflater.inflate(R.layout.guess_popup,null);
+
+        //Get the devices screen density to calculate correct pixel sizes
+        float density=MapsActivity.this.getResources().getDisplayMetrics().density;
+        // create a focusable PopupWindow with the given layout and correct size
+        final PopupWindow pw = new PopupWindow(layout, (int)density*240, (int)density*285, true);
+        //Button to close the pop-up
+        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pw.dismiss();
+            }
+        });
+        //Set up touch closing outside of pop-up
+        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+        pw.setOutsideTouchable(true);
+        // display the pop-up in the center
+        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
     }
 }
 /*

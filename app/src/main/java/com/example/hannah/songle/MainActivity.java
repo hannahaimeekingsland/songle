@@ -31,6 +31,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
+        // set a onclick listener for when the button gets clicked
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            // Start new list activity
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(MainActivity.this, SettingsScreen.class);
+                startActivity(mainIntent);
+            }
+        });
+
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -44,20 +54,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        //super.onActivityCreated(savedInstanceState);
-        // get the button view
-        ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
-        // set a onclick listener for when the button gets clicked
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-                    // Start new list activity
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(mainIntent);
-            }
-        });
-    }
 
 }
 
