@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class KmlParser {
 
     private static final String ns = null;
+    public static String unique = "kml";
 
     public static ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {

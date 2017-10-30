@@ -16,6 +16,7 @@ import java.util.List;
 
 public class XmlParser {
     private static final String ns = null;
+    public static final String unique = "xml";
 
     public static ArrayList<Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         try {

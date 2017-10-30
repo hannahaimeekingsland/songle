@@ -50,7 +50,7 @@ public class MapsActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    KmlLayer layer;
+    //KmlLayer layer;
     InputStream kmlInputStream;
 
     @Override
