@@ -14,11 +14,10 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/imageView5"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="166dp"
+        android:layout_marginTop="64dp"
         android:background="#cc6618"
-        android:backgroundTint="@color/colorAccent"
         android:text="@string/playButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,9 +28,9 @@
         android:id="@+id/textView"
         android:layout_width="234dp"
         android:layout_height="121dp"
-        android:layout_above="@+id/button2"
+        android:layout_alignBottom="@+id/imageView5"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="18dp"
         android:fontFamily="@font/fredoka_one"
         android:text="@string/songleText"
         android:textSize="70sp"
@@ -42,25 +41,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="32dp"
-        android:layout_height="36dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="11dp"
-        android:layout_marginTop="14dp"
-        app:srcCompat="@drawable/whitewheel"
-        tools:layout_editor_absoluteX="346dp"
-        tools:layout_editor_absoluteY="5dp" />
-
-    <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView4"
-        android:layout_marginEnd="47dp"
-        android:layout_marginTop="95dp"
+        android:layout_above="@+id/imageView5"
+        android:layout_marginBottom="69dp"
+        android:layout_marginEnd="41dp"
         android:layout_toStartOf="@+id/button2"
+        android:contentDescription="@string/musicNote1"
         android:rotation="-25"
         app:srcCompat="@mipmap/musicnote" />
 
@@ -69,9 +57,30 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="17dp"
-        android:layout_toStartOf="@+id/imageView4"
+        android:layout_toStartOf="@+id/imageView6"
+        android:contentDescription="@string/musicNote2"
         android:rotation="25"
         app:srcCompat="@drawable/musicnote2" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignTop="@+id/textView"
+        android:contentDescription="@string/musicNote3"
+        android:rotation="20"
+        app:srcCompat="@drawable/musicnote1" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignEnd="@+id/imageView3"
+        android:layout_marginEnd="13dp"
+        android:contentDescription="@string/trebleClef"
+        android:rotation="-30"
+        app:srcCompat="@drawable/trebleclef" />
 
 </RelativeLayout>

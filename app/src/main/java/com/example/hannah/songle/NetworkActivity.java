@@ -61,7 +61,8 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
         if(getIntent().getStringExtra("unique").equals("xml")) {
             mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
         } else if (getIntent().getStringExtra("unique").equals("kml")) {
-            mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map5.kml");
+            mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map" +
+                    "5.kml");
         } else if (getIntent().getStringExtra("unique").equals("lyrics")) {
             mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/lyrics.txt");
         }

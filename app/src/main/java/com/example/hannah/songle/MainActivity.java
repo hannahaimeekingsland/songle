@@ -27,11 +27,11 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                startActivity(new Intent(MainActivity.this, LevelChoice.class));
             }
         });
 
-        ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
+        /*ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
         // set a onclick listener for when the button gets clicked
         settingsButton.setOnClickListener(new View.OnClickListener() {
             // Start new list activity
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent mainIntent = new Intent(MainActivity.this, SettingsScreen.class);
                 startActivity(mainIntent);
             }
-        });
+        });/*
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);

@@ -3,6 +3,7 @@ package com.example.hannah.songle;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -70,7 +71,7 @@ public class MapsActivity extends AppCompatActivity
                     .build();
             //mGoogleApiClient.connect();
         }
-        /*ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
+        ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
         // set a onclick listener for when the button gets clicked
         settingsButton.setOnClickListener(new View.OnClickListener() {
             // Start new list activity
@@ -78,12 +79,12 @@ public class MapsActivity extends AppCompatActivity
                 Intent mainIntent = new Intent(MapsActivity.this, SettingsScreen.class);
                 startActivity(mainIntent);
             }
-        });*/
+        });
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
     }
 
-    @Override
+    /*@Override
     public void onPause() {
         super.onPause();
 
@@ -91,12 +92,14 @@ public class MapsActivity extends AppCompatActivity
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
-    }
+    }*/
+
+    //Create onResume
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap=googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -1,8 +1,11 @@
 package com.example.hannah.songle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by s1518196 on 23/10/17.

@@ -31,5 +31,11 @@
     <string name="guessStr">Guess</string>
     <string name="guessPrompt">Your guess:</string>
     <string name="guessButton">Guess!</string>
+    <string name="settingsWheel">Settings</string>
+    <string name="musicNote1">Music note</string>
+    <string name="musicNote2">Music Note 2</string>
+    <string name="musicNote3">Music Note 3</string>
+    <string name="trebleClef">Treble Clef</string>
+    <string name="closeButton">Close Button</string>
     />
 </resources>
