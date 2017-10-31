@@ -94,7 +94,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }*/
 
-    //Create onResume
+    //Create onResume??
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

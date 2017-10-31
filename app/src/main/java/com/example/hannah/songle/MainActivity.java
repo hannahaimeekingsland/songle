@@ -14,6 +14,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     static String TAG = "MainActivity";
 
@@ -22,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        //NetworkActivity.DownloadXmlTask download = new NetworkActivity.DownloadXmlTask();
+//        String URL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
+//        DownloadXML download = new DownloadXML();
+//        ArrayList<DownloadXML.Entry> output = new ArrayList<DownloadXML.Entry>();
+//        download.execute(URL);
 
         Button playButton = (Button) (findViewById(R.id.button2));
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -38,18 +46,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mainIntent = new Intent(MainActivity.this, SettingsScreen.class);
                 startActivity(mainIntent);
-            }
-        });/*
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });*/
     }

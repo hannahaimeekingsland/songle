@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -23,6 +24,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     static int number = rand.nextInt(18) + 1;
     private NetworkFragment mNetworkFragment;
     private boolean mDownloading = false;
+    public String TAG = "Network Activity";
 
     public static final String WIFI = "Wi-Fi";
     public static final String ANY = "Any";
@@ -123,7 +125,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
 
 
     // Implementation of AsyncTask used to download XML feed from the webpage.
-    private class DownloadXmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
+    public class DownloadXmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
         @Override
         protected ArrayList<XmlParser.Entry> doInBackground(String... urls) {
             try {
@@ -140,7 +142,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
         @Override
         protected void onPostExecute(ArrayList<XmlParser.Entry> result) {
             //setContentView(R.layout.activity_main);
-            System.out.println("<Song>");
+            Log.d(TAG, "<Song>");
             for (XmlParser.Entry e : result) {
                 System.out.println(e.number);
                 System.out.println(e.artist);
