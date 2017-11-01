@@ -1,5 +1,6 @@
 package com.example.hannah.songle;
 
+import android.os.AsyncTask;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -7,13 +8,61 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Created by s1518196 on 29/10/17.
+ * Created by s1518196 on 01/11/17.
  */
 
-public class KmlParser {
+public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
+    @Override
+    protected ArrayList<Point> doInBackground(String... urls) {
+        //System.out.println(">>>>>>>>>>>>>> In doInBackground");
+        try {
+            return loadKmlFromNetwork(urls[0]);
+        } catch (IOException e) {
+            return null;
+        } catch (XmlPullParserException e) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Point> result) {
+        // Do something with result
+        //System.out.println(">>>>>>>>>>>>>> In onPostExecute");
+    }
+
+    //Method loadXmlFromNetwork, returns a string
+    private ArrayList<Point> loadKmlFromNetwork(String urlString) throws
+            XmlPullParserException, IOException {
+        System.out.println(">>>>>>>>>>>>>> In loadKmlFromNetwork");
+        ArrayList<Point> result = new ArrayList<Point>();
+        try (InputStream stream = downloadUrl(urlString)) {
+            // Do something with stream e.g. parse as XML, build result
+            result = parse(stream);
+        }
+        return result;
+    }
+
+
+    //Method downloadUrl, returns an input stream
+    // Given a string representation of a URL, sets up a connection and gets
+    // an input stream.
+    private InputStream downloadUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // Also available: HttpsURLConnection
+        conn.setReadTimeout(10000);
+        conn.setConnectTimeout(15000);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+        // Starts the query
+        conn.connect();
+        return conn.getInputStream();
+    }
 
     private static final String ns = null;
     public static String unique = "kml";
@@ -30,8 +79,8 @@ public class KmlParser {
         }
     }
 
-    private static ArrayList<KmlParser.Point> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<KmlParser.Point> points = new ArrayList<KmlParser.Point>();
+    private static ArrayList<DownloadKml.Point> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        ArrayList<DownloadKml.Point> points = new ArrayList<DownloadKml.Point>();
 
         parser.require(XmlPullParser.START_TAG, ns, "Document");
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -66,7 +115,7 @@ public class KmlParser {
 
     // Parses the contents of a Point. If it encounters a name, description, styleurl, or coordinates
     // tag, hands them off to their respective "read" methods for processing. Otherwise, skips the tag.
-    private static KmlParser.Point readPoint(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private static DownloadKml.Point readPoint(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "Placemark");
         String name = null;
         String description = null;
@@ -89,7 +138,7 @@ public class KmlParser {
                 skip(parser);
             }
         }
-        return new KmlParser.Point(name, description, styleurl, coordinates);
+        return new DownloadKml.Point(name, description, styleurl, coordinates);
     }
 
     private static String readName(XmlPullParser parser) throws IOException, XmlPullParserException {

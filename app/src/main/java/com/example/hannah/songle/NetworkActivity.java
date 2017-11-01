@@ -81,7 +81,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     @Override
     public void updateFromDownload(Object result) {
         Intent intent = new Intent();
-        intent.putExtra();
+        //intent.putExtra();
         //arraylist
     }
 
@@ -125,12 +125,12 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
 
 
     // Implementation of AsyncTask used to download XML feed from the webpage.
-    public class DownloadXmlTask extends AsyncTask<String, Void, ArrayList<XmlParser.Entry>> {
+    public class DownloadXmlTask extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
         @Override
-        protected ArrayList<XmlParser.Entry> doInBackground(String... urls) {
+        protected ArrayList<DownloadXml.Entry> doInBackground(String... urls) {
             try {
                 InputStream stream = new ByteArrayInputStream(urls[0].getBytes(StandardCharsets.UTF_8.name()));
-                XmlParser xml_parser = new XmlParser();
+                DownloadXml xml_parser = new DownloadXml();
                 return xml_parser.parse(stream);
             } catch (IOException e) {
                 return null;
@@ -140,10 +140,10 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
         }
 
         @Override
-        protected void onPostExecute(ArrayList<XmlParser.Entry> result) {
+        protected void onPostExecute(ArrayList<DownloadXml.Entry> result) {
             //setContentView(R.layout.activity_main);
             Log.d(TAG, "<Song>");
-            for (XmlParser.Entry e : result) {
+            for (DownloadXml.Entry e : result) {
                 System.out.println(e.number);
                 System.out.println(e.artist);
                 System.out.println(e.title);
@@ -154,12 +154,12 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     }
 
     // Implementation of AsyncTask used to download XML feed from the webpage.
-    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<KmlParser.Point>> {
+    private class DownloadKmlTask extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
         @Override
-        protected ArrayList<KmlParser.Point> doInBackground(String... urls) {
+        protected ArrayList<DownloadKml.Point> doInBackground(String... urls) {
             try {
                 InputStream stream = new ByteArrayInputStream(urls[0].getBytes(StandardCharsets.UTF_8.name()));
-                KmlParser kml_parser = new KmlParser();
+                DownloadKml kml_parser = new DownloadKml();
                 return kml_parser.parse(stream);
             } catch (IOException e) {
                 return null;
@@ -169,7 +169,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
         }
 
         @Override
-        protected void onPostExecute(ArrayList<KmlParser.Point> result) {
+        protected void onPostExecute(ArrayList<DownloadKml.Point> result) {
             //setContentView(R.layout.activity_main);
         }
     }

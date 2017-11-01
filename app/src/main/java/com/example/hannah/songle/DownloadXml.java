@@ -6,18 +6,11 @@ import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by s1518196 on 31/10/17.
@@ -25,14 +18,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
 
-
-    public ArrayList<DownloadXml.Entry> doInBackground(String... urls) {
+    @Override
+    protected ArrayList<Entry> doInBackground(String... urls) {
+        System.out.println(">>>>>>>>>>>>>> In doInBackground");
         try {
-            URL url = new URL(urls[0]);
-            String stringURL = downloadUrl(url);
-            InputStream stream = new ByteArrayInputStream(stringURL.getBytes(StandardCharsets.UTF_8.name()));
-            DownloadXml xml_parser = new DownloadXml();
-            return xml_parser.parse(stream);
+            return loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
             return null;
         } catch (XmlPullParserException e) {
@@ -40,8 +30,26 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         }
     }
 
+    @Override
+    protected void onPostExecute(ArrayList<Entry> result) {
+        // Do something with result
+        System.out.println(">>>>>>>>>>>>>> In onPostExecute");
+    }
 
-    //Method downloadUrl,mreturns an input stream
+    //Method loadXmlFromNetwork, returns a string
+    private ArrayList<Entry> loadXmlFromNetwork(String urlString) throws
+            XmlPullParserException, IOException {
+        System.out.println(">>>>>>>>>>>>>> In loadXmlFromNetwork");
+        ArrayList<Entry> result = new ArrayList<Entry>();
+        try (InputStream stream = downloadUrl(urlString)) {
+    // Do something with stream e.g. parse as XML, build result
+            result = parse(stream);
+        }
+        return result;
+    }
+
+
+    //Method downloadUrl, returns an input stream
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
     private InputStream downloadUrl(String urlString) throws IOException {
