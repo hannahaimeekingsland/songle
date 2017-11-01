@@ -59,7 +59,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_network);
-        //change
+        //This is wrong?????
         if(getIntent().getStringExtra("unique").equals("xml")) {
             mNetworkFragment = NetworkFragment.getInstance(getFragmentManager(), "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
         } else if (getIntent().getStringExtra("unique").equals("kml")) {
@@ -81,7 +81,7 @@ public class NetworkActivity extends FragmentActivity implements DownloadCallbac
     @Override
     public void updateFromDownload(Object result) {
         Intent intent = new Intent();
-        //intent.putExtra();
+        intent.putExtra();
         //arraylist
     }
 

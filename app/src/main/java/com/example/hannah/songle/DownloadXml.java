@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,83 +23,45 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by s1518196 on 31/10/17.
  */
 
-public class DownloadXML extends AsyncTask<String, Void, ArrayList<DownloadXML.Entry>> {
+public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
 
-    private String downloadUrl(URL url) throws IOException {
-        InputStream stream = null;
-        HttpsURLConnection connection = null;
-        String result = null;
+
+    public ArrayList<DownloadXml.Entry> doInBackground(String... urls) {
         try {
-            connection = (HttpsURLConnection) url.openConnection();
-            // Timeout for reading InputStream arbitrarily set to 3000ms.
-            connection.setReadTimeout(3000);
-            // Timeout for connection.connect() arbitrarily set to 3000ms.
-            connection.setConnectTimeout(3000);
-            // For this use case, set HTTP method to GET.
-            connection.setRequestMethod("GET");
-            // Already true by default but setting just in case; needs to be true since this request
-            // is carrying an input (response) body.
-            connection.setDoInput(true);
-            // Open communications link (network traffic occurs here).
-            connection.connect();
-            //publishProgress(DownloadCallback.Progress.CONNECT_SUCCESS);
-            int responseCode = connection.getResponseCode();
-            if (responseCode != HttpsURLConnection.HTTP_OK) {
-                throw new IOException("HTTP error code: " + responseCode);
-            }
-            // Retrieve the response body as an InputStream.
-            stream = connection.getInputStream();
-            //publishProgress(DownloadCallback.Progress.GET_INPUT_STREAM_SUCCESS, 0);
-            if (stream != null) {
-                // Converts Stream to String with max length of 500.
-                result = readStream(stream, 5000);
-            }
-        } finally {
-            // Close Stream and disconnect HTTPS connection.
-            if (stream != null) {
-                stream.close();
-            }
-            if (connection != null) {
-                connection.disconnect();
-            }
+            URL url = new URL(urls[0]);
+            String stringURL = downloadUrl(url);
+            InputStream stream = new ByteArrayInputStream(stringURL.getBytes(StandardCharsets.UTF_8.name()));
+            DownloadXml xml_parser = new DownloadXml();
+            return xml_parser.parse(stream);
+        } catch (IOException e) {
+            return null;
+        } catch (XmlPullParserException e) {
+            return null;
         }
-        return result;
     }
 
-    public String readStream(InputStream stream, int maxReadSize)
-            throws IOException, UnsupportedEncodingException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] rawBuffer = new char[maxReadSize];
-        int readSize;
-        StringBuffer buffer = new StringBuffer();
-        while (((readSize = reader.read(rawBuffer)) != -1) && maxReadSize > 0) {
-            if (readSize > maxReadSize) {
-                readSize = maxReadSize;
-            }
-            buffer.append(rawBuffer, 0, readSize);
-            maxReadSize -= readSize;
-        }
-        return buffer.toString();
+
+    //Method downloadUrl,mreturns an input stream
+    // Given a string representation of a URL, sets up a connection and gets
+    // an input stream.
+    private InputStream downloadUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    // Also available: HttpsURLConnection
+        conn.setReadTimeout(10000);
+        conn.setConnectTimeout(15000);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+    // Starts the query
+        conn.connect();
+        return conn.getInputStream();
     }
-    public ArrayList<DownloadXML.Entry> doInBackground(String... urls) {
-            try {
-                URL url = new URL(urls[0]);
-                String stringURL = downloadUrl(url);
-                InputStream stream = new ByteArrayInputStream(stringURL.getBytes(StandardCharsets.UTF_8.name()));
-                DownloadXML xml_parser = new DownloadXML();
-                return xml_parser.parse(stream);
-            } catch (IOException e) {
-                return null;
-            } catch (XmlPullParserException e) {
-                return null;
-            }
-        }
+
 
     private static final String ns = null;
     public static final String unique = "xml";
 
-    public static ArrayList<DownloadXML.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
+    public static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         System.out.println(">>>>>>> We are in parse");
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -111,8 +74,8 @@ public class DownloadXML extends AsyncTask<String, Void, ArrayList<DownloadXML.E
         }
     }
 
-    private static ArrayList<DownloadXML.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<DownloadXML.Entry> entries = new ArrayList<DownloadXML.Entry>();
+    private static ArrayList<DownloadXml.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        ArrayList<DownloadXml.Entry> entries = new ArrayList<DownloadXml.Entry>();
         System.out.println(">>>>>> WE ARE IN READFEED");
         parser.require(XmlPullParser.START_TAG, ns, "Songs");
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -146,7 +109,7 @@ public class DownloadXML extends AsyncTask<String, Void, ArrayList<DownloadXML.E
 
     // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them off
 // to their respective "read" methods for processing. Otherwise, skips the tag.
-    private static DownloadXML.Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private static DownloadXml.Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "Song");
         String number = null;
         String title = null;
@@ -171,7 +134,7 @@ public class DownloadXML extends AsyncTask<String, Void, ArrayList<DownloadXML.E
 
             }
         }
-        return new DownloadXML.Entry(number, title, artist, link);
+        return new DownloadXml.Entry(number, title, artist, link);
     }
 
 

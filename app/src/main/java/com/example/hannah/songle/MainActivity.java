@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        //NetworkActivity.DownloadXmlTask download = new NetworkActivity.DownloadXmlTask();
-//        String URL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
-//        DownloadXML download = new DownloadXML();
-//        ArrayList<DownloadXML.Entry> output = new ArrayList<DownloadXML.Entry>();
-//        download.execute(URL);
+        NetworkActivity.DownloadXmlTask download = new NetworkActivity.DownloadXmlTask();
+        String URL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
+        DownloadXml downloadXml = new DownloadXml();
+        ArrayList<DownloadXml.Entry> output = new ArrayList<DownloadXml.Entry>();
+        downloadXml.execute(URL);
 
         Button playButton = (Button) (findViewById(R.id.button2));
         playButton.setOnClickListener(new View.OnClickListener() {
