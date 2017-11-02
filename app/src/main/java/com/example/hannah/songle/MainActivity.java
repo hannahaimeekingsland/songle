@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        intent.putExtra("parsedKml", result);
+        MainActivity.this.startActivity(intent);
 
 
         Button playButton = (Button) (findViewById(R.id.button2));

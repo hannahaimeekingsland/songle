@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 public class MapsActivity extends AppCompatActivity
@@ -51,8 +52,7 @@ public class MapsActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    //KmlLayer layer;
-    InputStream kmlInputStream;
+    private ArrayList<DownloadKml.Point> points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,10 @@ public class MapsActivity extends AppCompatActivity
         });
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            points = (ArrayList<DownloadKml.Point>) extras.get("parsedKml");
+        }
     }
 
     /*@Override
@@ -238,6 +242,35 @@ public class MapsActivity extends AppCompatActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    public void addPlacemarks(ArrayList<DownloadKml.Point> points) {
+        for (DownloadKml.Point entry : points) {
+            String[] coords = new String[2];
+            coords = entry.coordinates.split(",");
+            LatLng marker = new LatLng(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+            mGoogleMap.addMarker(new MarkerOptions().position(marker)
+                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(points))));
+        }
+    }
+
+    public String getIcon(ArrayList<DownloadKml.Point> points) {
+        String output = "";
+        for (DownloadKml.Point entry : points) {
+            if (entry.styleurl.equals("#unclassified")) {
+                output = "R.drawable.";
+            } else if (entry.styleurl.equals("#boring")) {
+                output = "R.drawable.";
+            } else if (entry.styleurl.equals("#notboring")) {
+                output = "R.drawable.";
+            } else if (entry.styleurl.equals("#interesting")) {
+                output = "R.drawable.";
+            } else if (entry.styleurl.equals("#veryinteresting")) {
+                output = "R.drawable.";
+            }
+
+        }
+        return output;
     }
 
     //Have a method in here that creates placemarks fom the KML Layer, have icons that calls getTitle etc
