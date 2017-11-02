@@ -37,5 +37,6 @@
     <string name="musicNote3">Music Note 3</string>
     <string name="trebleClef">Treble Clef</string>
     <string name="closeButton">Close Button</string>
+    <string name="randomButton">Random</string>
     />
 </resources>
