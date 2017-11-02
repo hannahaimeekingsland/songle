@@ -39,6 +39,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import static com.example.hannah.songle.DownloadKml.*;
+
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -84,8 +86,12 @@ public class MapsActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            points = (ArrayList<DownloadKml.Point>) extras.get("parsedKml");
+            System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
+            points = (ArrayList<DownloadKml.Point>) getIntent().getExtras().getSerializable("parsedKml");
         }
+
+        System.out.println(">>>>>>>>>>>>>>" + points);
+        //addPlacemarks(points);
     }
 
     /*@Override
@@ -245,28 +251,28 @@ public class MapsActivity extends AppCompatActivity
     }
 
     public void addPlacemarks(ArrayList<DownloadKml.Point> points) {
-        for (DownloadKml.Point entry : points) {
+        for (Point entry : points) {
             String[] coords = new String[2];
             coords = entry.coordinates.split(",");
             LatLng marker = new LatLng(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
             mGoogleMap.addMarker(new MarkerOptions().position(marker)
-                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(points))));
+                    .title(entry.name).icon(BitmapDescriptorFactory.fromPath(getIcon(points))));
         }
     }
 
     public String getIcon(ArrayList<DownloadKml.Point> points) {
         String output = "";
-        for (DownloadKml.Point entry : points) {
+        for (Point entry : points) {
             if (entry.styleurl.equals("#unclassified")) {
-                output = "R.drawable.";
+                output = "R.drawable.whtblank";
             } else if (entry.styleurl.equals("#boring")) {
-                output = "R.drawable.";
+                output = "R.drawable.ylwblank";
             } else if (entry.styleurl.equals("#notboring")) {
-                output = "R.drawable.";
+                output = "R.drawable.ylwcircle";
             } else if (entry.styleurl.equals("#interesting")) {
-                output = "R.drawable.";
+                output = "R.drawable.orangediamond";
             } else if (entry.styleurl.equals("#veryinteresting")) {
-                output = "R.drawable.";
+                output = "R.drawable.redstars";
             }
 
         }

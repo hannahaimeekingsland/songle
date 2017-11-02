@@ -20,7 +20,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
     @Override
     protected ArrayList<Entry> doInBackground(String... urls) {
-        System.out.println(">>>>>>>>>>>>>> In doInBackground");
+        //System.out.println(">>>>>>>>>>>>>> In doInBackground");
         try {
             return loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
@@ -33,13 +33,13 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     @Override
     protected void onPostExecute(ArrayList<Entry> result) {
         // Do something with result
-        System.out.println(">>>>>>>>>>>>>> In onPostExecute");
+        //System.out.println(">>>>>>>>>>>>>> In onPostExecute");
     }
 
     //Method loadXmlFromNetwork, returns a string
     private ArrayList<Entry> loadXmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
-        System.out.println(">>>>>>>>>>>>>> In loadXmlFromNetwork");
+        //System.out.println(">>>>>>>>>>>>>> In loadXmlFromNetwork");
         ArrayList<Entry> result = new ArrayList<Entry>();
         try (InputStream stream = downloadUrl(urlString)) {
     // Do something with stream e.g. parse as XML, build result
@@ -70,7 +70,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     public static final String unique = "xml";
 
     public static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
-        System.out.println(">>>>>>> We are in parse");
+        //System.out.println(">>>>>>> We are in parse");
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -84,7 +84,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
     private static ArrayList<DownloadXml.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         ArrayList<DownloadXml.Entry> entries = new ArrayList<DownloadXml.Entry>();
-        System.out.println(">>>>>> WE ARE IN READFEED");
+        //System.out.println(">>>>>> WE ARE IN READFEED");
         parser.require(XmlPullParser.START_TAG, ns, "Songs");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -138,7 +138,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
                 number = readNumber(parser);
             } else {
                 skip(parser);
-                System.out.println(">>>>>>>>>>>skipped in readEntry");
+                //System.out.println(">>>>>>>>>>>skipped in readEntry");
 
             }
         }

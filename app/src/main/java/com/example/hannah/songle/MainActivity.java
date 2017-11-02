@@ -38,14 +38,15 @@ public class MainActivity extends AppCompatActivity {
         downloadXml.execute(XMLURL);
         String KMLURL = "";
         if (number < 10) {
-            KMLURL ="http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(0 + number)) + "/map5.kml";
+            KMLURL ="http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + "/map1.kml";
         } else {
-            KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map5.kml";
+            KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map1.kml";
         }
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>" + KMLURL);
         DownloadKml downloadKml = new DownloadKml();
         ArrayList<DownloadKml.Point> result = new ArrayList<DownloadKml.Point>();
         downloadKml.execute(KMLURL);
-        //System.out.println(">>>>>>>>>>>>>>>>>>> executed URL");
+        System.out.println(">>>>>>>>>>>>>>>>>>> executed KML");
         try {
             output = downloadXml.get();
             result = downloadKml.get();
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         intent.putExtra("parsedKml", result);
-        MainActivity.this.startActivity(intent);
+        System.out.println(">>>>>>>>>>>>>>>>>>> sent parsedKml");
 
 
         Button playButton = (Button) (findViewById(R.id.button2));

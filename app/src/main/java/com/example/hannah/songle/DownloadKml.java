@@ -8,6 +8,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * Created by s1518196 on 01/11/17.
  */
 
-public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
+public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> implements Serializable {
     @Override
     protected ArrayList<Point> doInBackground(String... urls) {
         //System.out.println(">>>>>>>>>>>>>> In doInBackground");
@@ -32,13 +33,11 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
     @Override
     protected void onPostExecute(ArrayList<Point> result) {
         // Do something with result
-        //System.out.println(">>>>>>>>>>>>>> In onPostExecute");
     }
 
     //Method loadXmlFromNetwork, returns a string
     private ArrayList<Point> loadKmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
-        System.out.println(">>>>>>>>>>>>>> In loadKmlFromNetwork");
         ArrayList<Point> result = new ArrayList<Point>();
         try (InputStream stream = downloadUrl(urlString)) {
             // Do something with stream e.g. parse as XML, build result
@@ -69,6 +68,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     public static ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
+            System.out.println(">>>>>>>>>>>>>>>>> in parse");
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
@@ -81,7 +81,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     private static ArrayList<DownloadKml.Point> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         ArrayList<DownloadKml.Point> points = new ArrayList<DownloadKml.Point>();
-
+        System.out.println(">>>>>>>>>>>>>>>>> in readFeed");
         parser.require(XmlPullParser.START_TAG, ns, "Document");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -95,6 +95,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
                 skip(parser);
             }
         }
+        System.out.println(">>>>>>>>>>>>>>>>> readFeed " + points);
         return points;
     }
 
@@ -145,6 +146,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         parser.require(XmlPullParser.START_TAG, ns, "name");
         String name = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "name");
+        System.out.println(">>>>>>>>>>>>>>>>> readName " + name);
         return name;
     }
 
@@ -153,15 +155,17 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         parser.require(XmlPullParser.START_TAG, ns, "description");
         String description = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "description");
+        System.out.println(">>>>>>>>>>>>>>>>> reaDescription " + description);
         return description;
     }
 
     // Processes link tags in the feed.
     private static String readStyleurl(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "styleUrl");
-        String styleUrl = readText(parser);
+        String styleurl = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "styleUrl");
-        return styleUrl;
+        System.out.println(">>>>>>>>>>>>>>>>> styleUrl " + styleurl);
+        return styleurl;
     }
 
     // Processes artist tags in the feed.
@@ -182,6 +186,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
                 skip(parser);
             }
         }
+        System.out.println(">>>>>>>>>>>>>>>>> coordinates " + coordinates);
         return coordinates;
     }
 
