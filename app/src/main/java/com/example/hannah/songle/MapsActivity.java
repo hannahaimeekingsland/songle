@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,6 +39,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.security.auth.login.LoginException;
 
 import static com.example.hannah.songle.DownloadKml.*;
 
@@ -85,13 +88,14 @@ public class MapsActivity extends AppCompatActivity
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
         Bundle extras = getIntent().getExtras();
+        points = getIntent().getParcelableArrayListExtra("parsedKml");
+        Log.e("parcelable", points.toString());
         if (extras != null) {
             System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
-            points = (ArrayList<DownloadKml.Point>) getIntent().getExtras().getSerializable("parsedKml");
+            points = getIntent().getExtras().getParcelableArrayList("parsedKml");
         }
 
         System.out.println(">>>>>>>>>>>>>>" + points);
-        //addPlacemarks(points);
     }
 
     /*@Override
@@ -110,7 +114,7 @@ public class MapsActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-
+        addPlacemarks(points);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -251,28 +255,32 @@ public class MapsActivity extends AppCompatActivity
     }
 
     public void addPlacemarks(ArrayList<DownloadKml.Point> points) {
-        for (Point entry : points) {
+        for (DownloadKml.Point entry : points) {
+            Log.e("name", entry.name);
+            Log.e("name", entry.description);
+            Log.e("name", entry.styleurl);
+            Log.e("name", entry.coordinates);
             String[] coords = new String[2];
             coords = entry.coordinates.split(",");
-            LatLng marker = new LatLng(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+            LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
             mGoogleMap.addMarker(new MarkerOptions().position(marker)
-                    .title(entry.name).icon(BitmapDescriptorFactory.fromPath(getIcon(points))));
+                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(points))));
         }
     }
 
-    public String getIcon(ArrayList<DownloadKml.Point> points) {
-        String output = "";
-        for (Point entry : points) {
+    public int getIcon(ArrayList<DownloadKml.Point> points) {
+        int output = 0;
+        for (DownloadKml.Point entry : points) {
             if (entry.styleurl.equals("#unclassified")) {
-                output = "R.drawable.whtblank";
+                output = R.drawable.whtblank;
             } else if (entry.styleurl.equals("#boring")) {
-                output = "R.drawable.ylwblank";
+                output = R.drawable.ylwblank;
             } else if (entry.styleurl.equals("#notboring")) {
-                output = "R.drawable.ylwcircle";
+                output = R.drawable.ylwcircle;
             } else if (entry.styleurl.equals("#interesting")) {
-                output = "R.drawable.orangediamond";
+                output = R.drawable.orangediamond;
             } else if (entry.styleurl.equals("#veryinteresting")) {
-                output = "R.drawable.redstars";
+                output = R.drawable.redstars;
             }
 
         }

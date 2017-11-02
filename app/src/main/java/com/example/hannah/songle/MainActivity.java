@@ -55,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        intent.putExtra("parsedKml", result);
+        final Intent intent = new Intent(MainActivity.this, LevelChoice.class);
+        Log.e("result", result.toString());
+        intent.putParcelableArrayListExtra("parsedKml", result);
         System.out.println(">>>>>>>>>>>>>>>>>>> sent parsedKml");
 
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, LevelChoice.class));
+                startActivity(intent);
             }
         });
 

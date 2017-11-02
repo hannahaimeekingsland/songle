@@ -18,12 +18,13 @@ public class LevelChoice extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_choice);
-
+        final Intent intent = new Intent(LevelChoice.this, MapsActivity.class);
+        intent.putExtra("parsedKml", getIntent().getExtras().getParcelableArrayList("parsedKml"));
         Button amateurButton = (Button) (findViewById(R.id.button4));
         amateurButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LevelChoice.this, MapsActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -31,7 +32,7 @@ public class LevelChoice extends Activity {
         gstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LevelChoice.this, MapsActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -39,7 +40,7 @@ public class LevelChoice extends Activity {
         fcoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LevelChoice.this, MapsActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -47,7 +48,7 @@ public class LevelChoice extends Activity {
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LevelChoice.this, MapsActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -55,7 +56,7 @@ public class LevelChoice extends Activity {
         impossibleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LevelChoice.this, MapsActivity.class));
+                startActivity(intent);
             }
         });
     }

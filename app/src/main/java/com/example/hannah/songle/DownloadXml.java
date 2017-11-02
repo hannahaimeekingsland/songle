@@ -6,10 +6,15 @@ import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -41,10 +46,10 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
             XmlPullParserException, IOException {
         //System.out.println(">>>>>>>>>>>>>> In loadXmlFromNetwork");
         ArrayList<Entry> result = new ArrayList<Entry>();
-        try (InputStream stream = downloadUrl(urlString)) {
+        String streamString = downloadUrl(urlString);
+        InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8));
     // Do something with stream e.g. parse as XML, build result
-            result = parse(stream);
-        }
+        result = parse(stream);
         return result;
     }
 
@@ -52,7 +57,8 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     //Method downloadUrl, returns an input stream
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
-    private InputStream downloadUrl(String urlString) throws IOException {
+    private String downloadUrl(String urlString) throws IOException {
+        String result = null;
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     // Also available: HttpsURLConnection
@@ -62,9 +68,32 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         conn.setDoInput(true);
     // Starts the query
         conn.connect();
-        return conn.getInputStream();
+        try {
+            result = readStream(conn.getInputStream(),2000000);
+        }
+        finally {
+            conn.getInputStream().close();
+            conn.disconnect();
+        }
+        return result;
     }
 
+    public String readStream(InputStream stream, int maxReadSize)
+            throws IOException, UnsupportedEncodingException {
+        Reader reader = null;
+        reader = new InputStreamReader(stream, "UTF-8");
+        char[] rawBuffer = new char[maxReadSize];
+        int readSize;
+        StringBuffer buffer = new StringBuffer();
+        while (((readSize = reader.read(rawBuffer)) != -1) && maxReadSize > 0) {
+            if (readSize > maxReadSize) {
+                readSize = maxReadSize;
+            }
+            buffer.append(rawBuffer, 0, readSize);
+            maxReadSize -= readSize;
+        }
+        return buffer.toString();
+    }
 
     private static final String ns = null;
     public static final String unique = "xml";
