@@ -19,12 +19,12 @@ public class SettingsScreen extends Activity {
         setContentView(R.layout.settings);
         ImageView closeButton = (ImageView) (findViewById(R.id.closeButton));
         // set a onclick listener for when the button gets clicked
-        closeButton.setOnClickListener(new View.OnClickListener() {
+        /*closeButton.setOnClickListener(new View.OnClickListener() {
             // Start new list activity
             public void onClick(View v) {
                 Intent mainIntent = new Intent(SettingsScreen.this, MapsActivity.class);
                 startActivity(mainIntent);
             }
-       });
+       });*/
     }
 }

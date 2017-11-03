@@ -17,7 +17,6 @@
     <string name="quitButton">Quit Current Game</string>
     <string name="mainMenuButton">Main Menu</string>
     <string name="newGameButton">New Game</string>
-    <string name="sure">Are you sure you want to start a new game? Your current game will be lost.</string>
     <string name="yesButton">Yes</string>
     <string name="pref_sync">pref_sync</string>
     <string name="pref_sync_summ">pref_sync_summ</string>
@@ -38,5 +37,12 @@
     <string name="trebleClef">Treble Clef</string>
     <string name="closeButton">Close Button</string>
     <string name="randomButton">Random</string>
+    <string name="buyHint">Would you like to buy 5 words for 20 pts?</string>
+    <string name="buyButton">Buy!</string>
+    <string name="incorrectGuess">Your guess was not correct</string>
+    <string name="tryAgain">Try again</string>
+    <string name="correctGuess">Congratulations! Your guess was correct</string>
+    <string name="mainMenu">Main Menu</string>
+    <string name="anotherSong">Choose another song</string>
     />
 </resources>

@@ -76,6 +76,7 @@ public class MapsActivity extends AppCompatActivity
                     .build();
             //mGoogleApiClient.connect();
         }
+        /*
         ImageView settingsButton = (ImageView) (findViewById(R.id.imageView4));
         // set a onclick listener for when the button gets clicked
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class MapsActivity extends AppCompatActivity
                 Intent mainIntent = new Intent(MapsActivity.this, SettingsScreen.class);
                 startActivity(mainIntent);
             }
-        });
+        });*/
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
         Bundle extras = getIntent().getExtras();

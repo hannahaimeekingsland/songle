@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="38dp"
         android:layout_weight="1"
         android:background="#cc6618"
         android:paddingLeft="15dp"
@@ -18,25 +18,11 @@
         android:text="@string/resumeButton" />
 
     <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="33dp"
-        android:layout_weight="1"
-        android:background="#cc6618"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/wordLiButton" />
-
-    <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button4"
-        android:layout_below="@+id/button5"
-        android:layout_marginTop="33dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_weight="1"
         android:background="#cc6618"
         android:paddingLeft="15dp"
@@ -47,9 +33,9 @@
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button5"
         android:layout_below="@+id/button6"
-        android:layout_marginTop="29dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
         android:background="#cc6618"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -59,23 +45,13 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/closeButton"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="82dp"
         android:fontFamily="@font/fredoka_one"
         android:text="@string/settings"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
         android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/closeButton"
-        app:srcCompat="@drawable/cross" />
 
 </RelativeLayout>
