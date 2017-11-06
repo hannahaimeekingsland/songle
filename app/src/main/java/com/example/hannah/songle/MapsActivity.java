@@ -90,13 +90,11 @@ public class MapsActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         points = getIntent().getParcelableArrayListExtra("parsedKml");
-        Log.e("parcelable", points.toString());
         if (extras != null) {
-            System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
+            //System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
             points = getIntent().getExtras().getParcelableArrayList("parsedKml");
         }
-
-        System.out.println(">>>>>>>>>>>>>>" + points);
+        //System.out.println(">>>>>>>>>>>>>>" + points);
     }
 
     /*@Override
@@ -143,7 +141,8 @@ public class MapsActivity extends AppCompatActivity
             //mGoogleApiClient.connect();
             mGoogleMap.setMyLocationEnabled(true);
         }
-
+        LatLng start = new LatLng(55.9533, -3.1883);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
     }
 
     @Override
@@ -263,27 +262,26 @@ public class MapsActivity extends AppCompatActivity
             Log.e("name", entry.coordinates);
             String[] coords = new String[2];
             coords = entry.coordinates.split(",");
+            Log.e("styleurl", entry.styleurl);
+            Log.e("hello", "we are here!");
             LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
             mGoogleMap.addMarker(new MarkerOptions().position(marker)
-                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(points))));
+                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
         }
     }
 
-    public int getIcon(ArrayList<DownloadKml.Point> points) {
+    public int getIcon(Point p) {
         int output = 0;
-        for (DownloadKml.Point entry : points) {
-            if (entry.styleurl.equals("#unclassified")) {
-                output = R.drawable.whtblank;
-            } else if (entry.styleurl.equals("#boring")) {
-                output = R.drawable.ylwblank;
-            } else if (entry.styleurl.equals("#notboring")) {
-                output = R.drawable.ylwcircle;
-            } else if (entry.styleurl.equals("#interesting")) {
-                output = R.drawable.orangediamond;
-            } else if (entry.styleurl.equals("#veryinteresting")) {
-                output = R.drawable.redstars;
-            }
-
+        if (p.styleurl.equals("#unclassified")) {
+            output = R.drawable.whtblank;
+        } else if (p.styleurl.equals("#boring")) {
+            output = R.drawable.ylwblank;
+        } else if (p.styleurl.equals("#notboring")) {
+            output = R.drawable.ylwcircle;
+        } else if (p.styleurl.equals("#interesting")) {
+            output = R.drawable.orangediamond;
+        } else if (p.styleurl.equals("#veryinteresting")) {
+            output = R.drawable.redstars;
         }
         return output;
     }

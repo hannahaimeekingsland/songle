@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         downloadXml.execute(XMLURL);
         String KMLURL = "";
         if (number < 10) {
-            KMLURL ="http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + "/map1.kml";
+            KMLURL ="http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + "/map4.kml";
         } else {
-            KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map1.kml";
+            KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/map4.kml";
         }
         System.out.println(">>>>>>>>>>>>>>>>>>>>>" + KMLURL);
         DownloadKml downloadKml = new DownloadKml();

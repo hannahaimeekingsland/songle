@@ -44,5 +44,14 @@
     <string name="correctGuess">Congratulations! Your guess was correct</string>
     <string name="mainMenu">Main Menu</string>
     <string name="anotherSong">Choose another song</string>
+    <string name="song1">Song 1</string>
+    <string name="song2">Song 2</string>
+    <string name="song3">Song 3</string>
+    <string name="song5">Song 5</string>
+    <string name="song4">Song 4</string>
+    <string name="chooseSong">Choose a song</string>
+    <string name="song6">Song 6</string>
+    <string name="song7">Song 7</string>
+    <string name="song8">Song 8</string>
     />
 </resources>
