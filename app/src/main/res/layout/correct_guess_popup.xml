@@ -20,19 +20,12 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/mainMenuButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/mainMenu" />
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="6dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/anotherSong" />
 
 
 </LinearLayout>

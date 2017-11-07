@@ -24,6 +24,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -32,5 +33,16 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|bottom">
+
+            <Button
+                android:id="@+id/mapButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="to settings!"/>
+        </LinearLayout>
 
 </fragment>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 /**
@@ -36,7 +35,7 @@ public class LevelChoice extends Activity {
             }
         });
 
-        Button fcoButton = (Button) (findViewById(R.id.button6));
+        Button fcoButton = (Button) (findViewById(R.id.getHintButton));
         fcoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

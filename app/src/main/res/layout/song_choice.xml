@@ -88,7 +88,7 @@
             android:text="@string/song2" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/getHintButton"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/button5"
@@ -101,8 +101,8 @@
             android:id="@+id/button7"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/button6"
-            android:layout_below="@+id/button6"
+            android:layout_alignStart="@+id/getHintButton"
+            android:layout_below="@+id/getHintButton"
             android:layout_marginTop="22dp"
             android:background="#cc6618"
             android:text="@string/song4" />
