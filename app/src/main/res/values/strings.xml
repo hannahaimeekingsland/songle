@@ -54,5 +54,8 @@
     <string name="song7">Song 7</string>
     <string name="song8">Song 8</string>
     <string name="quitGame">Quit current game</string>
+    <string name="wordsCollected">Words collected</string>
+    <string name="quit">Quit</string>
+    <string name="confirmQuit">Are you sure you would like to quit the current game? All data will be lost</string>
     />
 </resources>

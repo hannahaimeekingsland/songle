@@ -45,7 +45,7 @@ public class SettingsScreen extends Activity {
         //Get the devices screen density to calculate correct pixel sizes
         float density=SettingsScreen.this.getResources().getDisplayMetrics().density;
         // create a focusable PopupWindow with the given layout and correct size
-        final PopupWindow pw = new PopupWindow(layout, (int)density*270, (int)density*200, true);
+        final PopupWindow pw = new PopupWindow(layout, (int)density*295, (int)density*150, true);
         //Button to close the pop-up
         ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -53,7 +53,7 @@ public class SettingsScreen extends Activity {
             }
         });
         //Set up touch closing outside of pop-up
-        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //pw.setBackgroundDrawable(new ColorDrawable());
         pw.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {

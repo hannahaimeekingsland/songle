@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -80,7 +81,7 @@ public class MapsActivity extends AppCompatActivity
         final Intent toSettings = new Intent(MapsActivity.this, SettingsScreen.class);
         Button mapsButton = (Button) findViewById(R.id.mapButton);
         Log.e("mapsbutton", "clicked");
-        //mapsButton.setVisibility(View.INVISIBLE);
+        mapsButton.setVisibility(View.INVISIBLE);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -266,7 +267,6 @@ public class MapsActivity extends AppCompatActivity
             String[] coords = new String[2];
             coords = entry.coordinates.split(",");
             Log.e("styleurl", entry.styleurl);
-            Log.e("hello", "we are here!");
             LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
             mGoogleMap.addMarker(new MarkerOptions().position(marker)
                     .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
@@ -275,7 +275,10 @@ public class MapsActivity extends AppCompatActivity
 
     public int getIcon(Point p) {
         int output = 0;
-        if (p.styleurl.equals("#unclassified")) {
+        if (p.name.equals("11:6") || p.name.equals("21:1") || p.name.equals("10:1")
+                || p.name.equals("49:7") || p.name.equals("54:3")) {
+            output = R.drawable.grnblank;
+        } else if (p.styleurl.equals("#unclassified")) {
             output = R.drawable.whtblank;
         } else if (p.styleurl.equals("#boring")) {
             output = R.drawable.ylwblank;
