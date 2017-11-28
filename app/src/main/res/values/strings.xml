@@ -57,5 +57,6 @@
     <string name="wordsCollected">Words collected</string>
     <string name="quit">Quit</string>
     <string name="confirmQuit">Are you sure you would like to quit the current game? All data will be lost</string>
+    <string name="random">random</string>
     />
 </resources>

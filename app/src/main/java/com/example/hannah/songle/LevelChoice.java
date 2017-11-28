@@ -23,14 +23,15 @@ public class LevelChoice extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_choice);
+        Log.e("current class", "level choice");
 
         final Intent intent = new Intent(LevelChoice.this, SongChoice.class);
-        intent.putExtra("parsedKml", getIntent().getExtras().getParcelableArrayList("parsedKml"));
+        //intent.putExtra("parsedKml", getIntent().getExtras().getParcelableArrayList("parsedKml"));
         Button amateurButton = (Button) (findViewById(R.id.button4));
         amateurButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                levelChoice = "map5.kml";
+                levelChoice = "/map5.kml";
                 intent.putExtra("levelChoice", levelChoice);
                 startActivity(intent);
             }
@@ -40,7 +41,7 @@ public class LevelChoice extends Activity {
         gstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                levelChoice = "map4.kml";
+                levelChoice = "/map4.kml";
                 intent.putExtra("levelChoice", levelChoice);
                 startActivity(intent);
             }
@@ -50,7 +51,7 @@ public class LevelChoice extends Activity {
         fcoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                levelChoice = "map3.kml";
+                levelChoice = "/map3.kml";
                 intent.putExtra("levelChoice", levelChoice);
                 startActivity(intent);
             }
@@ -60,7 +61,7 @@ public class LevelChoice extends Activity {
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                levelChoice = "map2.kml";
+                levelChoice = "/map2.kml";
                 intent.putExtra("levelChoice", levelChoice);
                 startActivity(intent);
             }
@@ -70,7 +71,7 @@ public class LevelChoice extends Activity {
         impossibleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                levelChoice = "map1.kml";
+                levelChoice = "/map1.kml";
                 intent.putExtra("levelChoice", levelChoice);
                 startActivity(intent);
             }

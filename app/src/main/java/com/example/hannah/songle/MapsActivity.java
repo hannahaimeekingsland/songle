@@ -275,10 +275,7 @@ public class MapsActivity extends AppCompatActivity
 
     public int getIcon(Point p) {
         int output = 0;
-        if (p.name.equals("11:6") || p.name.equals("21:1") || p.name.equals("10:1")
-                || p.name.equals("49:7") || p.name.equals("54:3")) {
-            output = R.drawable.grnblank;
-        } else if (p.styleurl.equals("#unclassified")) {
+        if (p.styleurl.equals("#unclassified")) {
             output = R.drawable.whtblank;
         } else if (p.styleurl.equals("#boring")) {
             output = R.drawable.ylwblank;
