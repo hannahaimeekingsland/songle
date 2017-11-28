@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.security.auth.login.LoginException;
 
@@ -60,6 +61,7 @@ public class MapsActivity extends AppCompatActivity
     Location mLastLocation;
     Marker mCurrLocationMarker;
     private ArrayList<DownloadKml.Point> points;
+    String lyrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,8 @@ public class MapsActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         points = getIntent().getParcelableArrayListExtra("parsedKml");
+        lyrics = getIntent().getStringExtra("lyrics");
+        Log.e("lyrics", lyrics);
         if (extras != null) {
             //System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
             points = getIntent().getExtras().getParcelableArrayList("parsedKml");
@@ -118,6 +122,19 @@ public class MapsActivity extends AppCompatActivity
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         addPlacemarks(points);
+
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            //measure distance of marker from current location
+            //turn marker green
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (marker.equals(marker))
+                    marker.hideInfoWindow();
+                //pick up marker if close enough to current location
+                return true;
+            }
+        });
+
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -258,18 +275,42 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
+    public HashMap<String, String> getLyrics(String lyrics) {
+        String splitNewLine[] = lyrics.split("\\r?\\n");
+        for (String word : splitNewLine) {
+            Log.e("splitNewLine", word);
+        }
+        HashMap<String, String> lyricsMap = new HashMap<String, String>();
+        int lineNum = 1;
+        for (String line : splitNewLine) {
+            String splitStr[] = line.split("[^\\w']+");
+            int place = 1;
+            for (int i = 2; i < splitStr.length; i++) {
+                lyricsMap.put(Integer.toString(lineNum) + ":" + Integer.toString(place), splitStr[i]);
+//                Log.e("String1", Integer.toString(lineNum) + ":" + Integer.toString(place));
+//                Log.e("String2", splitStr[i]);
+                place++;
+
+            }
+            //Log.e("here", "here!");
+            lineNum++;
+        }
+        return lyricsMap;
+    }
+
     public void addPlacemarks(ArrayList<DownloadKml.Point> points) {
+        HashMap<String, String> lyricsMap = getLyrics(lyrics);
         for (DownloadKml.Point entry : points) {
-            Log.e("name", entry.name);
-            Log.e("name", entry.description);
-            Log.e("name", entry.styleurl);
-            Log.e("name", entry.coordinates);
             String[] coords = new String[2];
             coords = entry.coordinates.split(",");
-            Log.e("styleurl", entry.styleurl);
+            //Log.e("styleurl", entry.styleurl);
+            String lyric = "";
+            if (lyricsMap.containsKey(entry.name)) {
+                lyric = lyricsMap.get(entry.name);
+            }
             LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
             mGoogleMap.addMarker(new MarkerOptions().position(marker)
-                    .title(entry.name).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
+                    .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
         }
     }
 
@@ -289,8 +330,10 @@ public class MapsActivity extends AppCompatActivity
         return output;
     }
 
-    //Have a method in here that creates placemarks fom the KML Layer, have icons that calls getTitle etc
-    //and associates each placemark using StyleUrl to add a picture.
+    public void inRange(Marker m) {
+
+
+    }
 
     private class HandleCorrect implements View.OnClickListener {
         public void onClick(View arg0) {
