@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -52,8 +53,7 @@ import static com.example.hannah.songle.DownloadKml.*;
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -64,6 +64,9 @@ public class MapsActivity extends AppCompatActivity
     private ArrayList<DownloadKml.Point> points;
     ArrayList<Marker> markers = new ArrayList<>();
     String lyrics;
+    String songName = "";
+    EditText mEdit;
+    String input = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +103,9 @@ public class MapsActivity extends AppCompatActivity
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         Log.e("lyrics", lyrics);
-//        if (extras != null) {
-//            //System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
-//            points = getIntent().getExtras().getParcelableArrayList("parsedKml");
-//        }
+        songName = getIntent().getStringExtra("songName");
+        Log.e("song name", songName);
+
     }
 
     /*@Override
@@ -123,22 +125,6 @@ public class MapsActivity extends AppCompatActivity
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         addPlacemarks(points);
-
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            //measure distance of marker from current location
-            //turn marker green
-            final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (marker.equals(marker)) {
-                    marker.remove();
-                    sendWord.putExtra("word", marker.getTitle());
-                    //marker.hideInfoWindow();
-                }
-                //pick up marker if close enough to current location
-                return true;
-            }
-        });
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -181,9 +167,64 @@ public class MapsActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    mLastLocation = location;
+                    if (mCurrLocationMarker != null) {
+                        mCurrLocationMarker.remove();
+                    }
+
+                    //Place current location marker
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latLng);
+                    markerOptions.title("Current Position");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+                    Log.e("zoom camera", "here");
+                    //move map camera
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+
+                }
+            });
+        }
+        //Why the fuck is this not working??????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Log.e("markers arraylist 2", markers.toString());
+        final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
+        for (Marker m : markers) {
+            Log.e("iterating through m", "here");
+            LatLng loc = m.getPosition();
+            Location markerLoc = new Location("markerLoc");
+            markerLoc.setLatitude(loc.latitude);
+            markerLoc.setLongitude(loc.longitude);
+            LatLng current = mCurrLocationMarker.getPosition();
+            Location currentLoc = new Location("current");
+            currentLoc.setLongitude(current.longitude);
+            currentLoc.setLatitude(current.latitude);
+            if (currentLoc.distanceTo(markerLoc) < 30) {
+                Log.e("comparing difference", "comparing difference");
+                mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    //measure distance of marker from current location
+                    //turn marker green
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Log.e("getting here", "clicked");
+                        if (marker.equals(marker)) {
+                            Log.e("word", marker.getTitle());
+                            //marker.remove();
+                            sendWord.putExtra("word", marker.getTitle());
+                            marker.hideInfoWindow();
+                        }
+                        //pick up marker if close enough to current location
+                        return true;
+                    }
+                });
+            }
         }
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {}
@@ -191,26 +232,6 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {}
 
-    @Override
-    public void onLocationChanged(Location location)
-    {
-        mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-
-        //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
-
-    }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private void checkLocationPermission() {
@@ -311,26 +332,27 @@ public class MapsActivity extends AppCompatActivity
             Marker m = mGoogleMap.addMarker(new MarkerOptions().position(marker)
                     .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
             markers.add(m);
+            Log.e("markers arraylist", markers.toString());
         }
     }
 
-    //Don't know where to put this????
-    public boolean inRange(Point p) {
-        //comparing the current location to the placemarks
-        Log.e("markers", "here");
-        LatLng currentLoc = mCurrLocationMarker.getPosition();
-        for (Marker m : markers) {
-            LatLng loc = m.getPosition();
-            if (distanceDiff(loc, currentLoc) > 30) {
-                //m.remove();
-                //Dunno what to do??
-                Log.e("word", m.getTitle());
-                return true;
-            }
-        }
-        //dunno
-        return false;
-    }
+//    //Don't know where to put this????
+//    public boolean inRange(Point p) {
+//        //comparing the current location to the placemarks
+//        Log.e("markers", "here");
+//        LatLng currentLoc = mCurrLocationMarker.getPosition();
+//        for (Marker m : markers) {
+//            LatLng loc = m.getPosition();
+//            if (distanceDiff(loc, currentLoc) > 30) {
+//                //m.remove();
+//                //Dunno what to do??
+//                Log.e("word", m.getTitle());
+//                return true;
+//            }
+//        }
+//        //dunno
+//        return false;
+//    }
 
     public int getIcon(Point p) {
         int output = 0;
@@ -349,19 +371,20 @@ public class MapsActivity extends AppCompatActivity
     }
 
 //    public boolean inRange(Point p) {
-////        Log.e("last location", mLastLocation.toString());
-////        Location markerLoc = new Location("marker");
-////        String[] coords = new String[2];
-////        coords = p.coordinates.split(",");
-////        markerLoc.setLatitude(Double.parseDouble(coords[1]));
-////        markerLoc.setLongitude(Double.parseDouble(coords[0]));
-////        if (mLastLocation.distanceTo(markerLoc) < 30) {
-////            return true;
-////        } else {
-////            return false;
-////        }
+//        Log.e("last location", mLastLocation.toString());
+//        Location markerLoc = new Location("marker");
+//        String[] coords = new String[2];
+//        coords = p.coordinates.split(",");
+//        markerLoc.setLatitude(Double.parseDouble(coords[1]));
+//        markerLoc.setLongitude(Double.parseDouble(coords[0]));
+//        if (mLastLocation.distanceTo(markerLoc) < 30) {
+//            return true;
+//        } else {
+//            return false;
+//        }
 //    }
 
+//    Old distance method - delete?
     public double distanceDiff(LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
         double lat1 = StartP.latitude;
@@ -387,19 +410,64 @@ public class MapsActivity extends AppCompatActivity
         return Radius * c;
     }
 
-    private class HandleCorrect implements View.OnClickListener {
-        public void onClick(View arg0) {
+    //assess whether guess is correct or not - not case sensitive
+    public void guess(String inputText) {
+        if (inputText.toLowerCase().equals(songName.toLowerCase())) {
             correctGuessPopup();
-        }
-
-    }
-
-    private class HandleIncorrect implements View.OnClickListener {
-        public void onClick(View arg0) {
+        } else {
             incorrectGuessPopup();
         }
-
     }
+
+    private class HandleClick implements View.OnClickListener {
+        public void onClick(View arg0) {
+            enableGuess();
+        }
+    }
+
+    private void enableGuess(){
+        //We need to get the instance of the LayoutInflater, use the context of this activity
+        LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
+        View layout = inflater.inflate(R.layout.guess_popup,null);
+        mEdit = (EditText)layout.findViewById(R.id.guessText);
+
+        //Get the devices screen density to calculate correct pixel sizes
+        float density=MapsActivity.this.getResources().getDisplayMetrics().density;
+        // create a focusable PopupWindow with the given layout and correct size
+        final PopupWindow pw = new PopupWindow(layout, (int)density*240, (int)density*260, true);
+        //Button to guess
+        ((Button) layout.findViewById(R.id.submitGuess)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                input = (String) mEdit.getText().toString();
+                Log.e("input", input);
+                guess(input);
+            }
+        });
+        //Button to close the pop-up
+        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.e("close clicked", "clicked");
+                pw.dismiss();
+            }
+        });
+        //Set up touch closing outside of pop-up
+        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+        pw.setOutsideTouchable(true);
+        // display the pop-up in the center
+        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    }
+
+
     private void correctGuessPopup(){
         //We need to get the instance of the LayoutInflater, use the context of this activity
         LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -449,44 +517,6 @@ public class MapsActivity extends AppCompatActivity
             }
         });
         pw.setOutsideTouchable(true);
-        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
-    }
-
-    private class HandleClick implements View.OnClickListener {
-        public void onClick(View arg0) {
-            enableGuess();
-        }
-    }
-
-    private void enableGuess(){
-        //We need to get the instance of the LayoutInflater, use the context of this activity
-        LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
-        View layout = inflater.inflate(R.layout.guess_popup,null);
-
-        //Get the devices screen density to calculate correct pixel sizes
-        float density=MapsActivity.this.getResources().getDisplayMetrics().density;
-        // create a focusable PopupWindow with the given layout and correct size
-        final PopupWindow pw = new PopupWindow(layout, (int)density*240, (int)density*260, true);
-        //Button to close the pop-up
-        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                pw.dismiss();
-            }
-        });
-        //Set up touch closing outside of pop-up
-        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        pw.setTouchInterceptor(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    pw.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-        pw.setOutsideTouchable(true);
-        // display the pop-up in the center
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 }

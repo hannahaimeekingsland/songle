@@ -2,6 +2,7 @@ package com.example.hannah.songle;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,7 @@ public class WordList extends ListActivity{
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);
+        Log.e("words arraylist", words.toString());
     }
 
     @Override

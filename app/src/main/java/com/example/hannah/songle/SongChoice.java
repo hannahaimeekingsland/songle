@@ -24,11 +24,13 @@ public class SongChoice extends Activity {
     String levelChoice;
     String lyricsURL = "";
     String KMLURL = "";
+    String songName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_choice);
+        final Intent intent = new Intent(SongChoice.this, MapsActivity.class);
         levelChoice = getIntent().getStringExtra("levelChoice");
         String XMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
         DownloadXml downloadXml = new DownloadXml();
@@ -46,15 +48,28 @@ public class SongChoice extends Activity {
         }
         Random rand = new Random();
         final int number = rand.nextInt(numButtons) + 1;
-        //System.out.println(">>>>>>>>>>>>>>>>>>> Instantiated downloadXml");
-
+        //Pass song title for use in Maps Activity
+        for (DownloadXml.Entry entry : output) {
+            String num;
+            if (number < 10) {
+                num = "0" + (String.valueOf(number));
+            } else {
+                num = String.valueOf(number);
+            }
+            if(num.equals(entry.number)) {
+                songName = entry.title;
+            }
+        }
+//        System.out.println(">>>>>>>>>>>>>>> song name:" + songName);
+//        Log.e("song name", songName);
+        intent.putExtra("songName", songName);
         //Handle KMLURL and lyrics for random instance
         Button random = (Button) (findViewById(R.id.random));
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (number < 10) {
-                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + "/words.txt";
+                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + (String.valueOf(number)) + "/words.txt";
                     KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + levelChoice;
                 } else {
                     lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + Integer.parseInt(String.valueOf(number)) + "/words.txt";
@@ -76,7 +91,6 @@ public class SongChoice extends Activity {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                final Intent intent = new Intent(SongChoice.this, MapsActivity.class);
                 //Log.e("result", result.toString());
                 intent.putExtra("lyrics", lyrics);
                 intent.putParcelableArrayListExtra("parsedKml", result);
