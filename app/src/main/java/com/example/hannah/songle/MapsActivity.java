@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,6 +62,7 @@ public class MapsActivity extends AppCompatActivity
     Location mLastLocation;
     Marker mCurrLocationMarker;
     private ArrayList<DownloadKml.Point> points;
+    ArrayList<Marker> markers = new ArrayList<>();
     String lyrics;
 
     @Override
@@ -94,15 +96,14 @@ public class MapsActivity extends AppCompatActivity
         //findViewById(R.id.guessButton).setOnClickListener(new HandleCorrect());
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         Log.e("lyrics", lyrics);
-        if (extras != null) {
-            //System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
-            points = getIntent().getExtras().getParcelableArrayList("parsedKml");
-        }
-        //System.out.println(">>>>>>>>>>>>>>" + points);
+//        if (extras != null) {
+//            //System.out.println(">>>>>>>>>>>>>>>>>>> recieved parsedKml");
+//            points = getIntent().getExtras().getParcelableArrayList("parsedKml");
+//        }
     }
 
     /*@Override
@@ -126,10 +127,14 @@ public class MapsActivity extends AppCompatActivity
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             //measure distance of marker from current location
             //turn marker green
+            final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.equals(marker))
-                    marker.hideInfoWindow();
+                if (marker.equals(marker)) {
+                    marker.remove();
+                    sendWord.putExtra("word", marker.getTitle());
+                    //marker.hideInfoWindow();
+                }
                 //pick up marker if close enough to current location
                 return true;
             }
@@ -164,6 +169,7 @@ public class MapsActivity extends AppCompatActivity
         }
         LatLng start = new LatLng(55.9533, -3.1883);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
+
     }
 
     @Override
@@ -277,9 +283,6 @@ public class MapsActivity extends AppCompatActivity
 
     public HashMap<String, String> getLyrics(String lyrics) {
         String splitNewLine[] = lyrics.split("\\r?\\n");
-        for (String word : splitNewLine) {
-            Log.e("splitNewLine", word);
-        }
         HashMap<String, String> lyricsMap = new HashMap<String, String>();
         int lineNum = 1;
         for (String line : splitNewLine) {
@@ -287,12 +290,8 @@ public class MapsActivity extends AppCompatActivity
             int place = 1;
             for (int i = 2; i < splitStr.length; i++) {
                 lyricsMap.put(Integer.toString(lineNum) + ":" + Integer.toString(place), splitStr[i]);
-//                Log.e("String1", Integer.toString(lineNum) + ":" + Integer.toString(place));
-//                Log.e("String2", splitStr[i]);
                 place++;
-
             }
-            //Log.e("here", "here!");
             lineNum++;
         }
         return lyricsMap;
@@ -309,9 +308,28 @@ public class MapsActivity extends AppCompatActivity
                 lyric = lyricsMap.get(entry.name);
             }
             LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
-            mGoogleMap.addMarker(new MarkerOptions().position(marker)
+            Marker m = mGoogleMap.addMarker(new MarkerOptions().position(marker)
                     .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
+            markers.add(m);
         }
+    }
+
+    //Don't know where to put this????
+    public boolean inRange(Point p) {
+        //comparing the current location to the placemarks
+        Log.e("markers", "here");
+        LatLng currentLoc = mCurrLocationMarker.getPosition();
+        for (Marker m : markers) {
+            LatLng loc = m.getPosition();
+            if (distanceDiff(loc, currentLoc) > 30) {
+                //m.remove();
+                //Dunno what to do??
+                Log.e("word", m.getTitle());
+                return true;
+            }
+        }
+        //dunno
+        return false;
     }
 
     public int getIcon(Point p) {
@@ -330,12 +348,53 @@ public class MapsActivity extends AppCompatActivity
         return output;
     }
 
-    public void inRange(Marker m) {
+//    public boolean inRange(Point p) {
+////        Log.e("last location", mLastLocation.toString());
+////        Location markerLoc = new Location("marker");
+////        String[] coords = new String[2];
+////        coords = p.coordinates.split(",");
+////        markerLoc.setLatitude(Double.parseDouble(coords[1]));
+////        markerLoc.setLongitude(Double.parseDouble(coords[0]));
+////        if (mLastLocation.distanceTo(markerLoc) < 30) {
+////            return true;
+////        } else {
+////            return false;
+////        }
+//    }
 
+    public double distanceDiff(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.e("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
 
+        return Radius * c;
     }
 
     private class HandleCorrect implements View.OnClickListener {
+        public void onClick(View arg0) {
+            correctGuessPopup();
+        }
+
+    }
+
+    private class HandleIncorrect implements View.OnClickListener {
         public void onClick(View arg0) {
             incorrectGuessPopup();
         }
@@ -360,6 +419,7 @@ public class MapsActivity extends AppCompatActivity
         });
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
+
     private void incorrectGuessPopup(){
         //We need to get the instance of the LayoutInflater, use the context of this activity
         LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

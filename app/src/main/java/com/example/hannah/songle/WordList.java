@@ -9,19 +9,23 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by s1518196 on 07/11/17.
  */
 
 public class WordList extends ListActivity{
+    String word = "";
+    ArrayList<String> words = new ArrayList<String>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
-        String[] values = new String[]{"silhouetto", "aching", "Mama",
-                "poor", "Scaramouche", "No", "Beelzebub", "monstrosity", "born", "shivers", "let"};
+        word = getIntent().getStringExtra("word");
+        words.add(word);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, values);
+                android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);
     }
 
