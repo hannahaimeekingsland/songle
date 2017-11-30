@@ -83,20 +83,19 @@ public class MapsActivity extends AppCompatActivity
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-            //mGoogleApiClient.connect();
+            mGoogleApiClient.connect();
         }
-        final Intent toSettings = new Intent(MapsActivity.this, SettingsScreen.class);
-        Button mapsButton = (Button) findViewById(R.id.mapButton);
+        final Intent toWordList = new Intent(this, WordList.class);
+        Button wordList = (Button) findViewById(R.id.wordList);
         //Log.e("mapsbutton", "clicked");
-        mapsButton.setVisibility(View.INVISIBLE);
-        mapsButton.setOnClickListener(new View.OnClickListener() {
+        wordList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(toSettings);
+                startActivity(toWordList);
                 overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
             }
         });
-        //findViewById(R.id.guessButton).setOnClickListener(new HandleCorrect());
+
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
         //Bundle extras = getIntent().getExtras();
@@ -132,12 +131,14 @@ public class MapsActivity extends AppCompatActivity
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
-                mGoogleApiClient = new GoogleApiClient.Builder(this)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .addApi(LocationServices.API)
-                        .build();
-                //mGoogleApiClient.connect();
+                if (mGoogleApiClient == null) {
+                    mGoogleApiClient = new GoogleApiClient.Builder(this)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .addApi(LocationServices.API)
+                            .build();
+                    mGoogleApiClient.connect();
+                }
                 mGoogleMap.setMyLocationEnabled(true);
             } else {
                 //Request Location Permission
@@ -145,12 +146,14 @@ public class MapsActivity extends AppCompatActivity
             }
         }
         else {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-            //mGoogleApiClient.connect();
+            if (mGoogleApiClient == null) {
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+                mGoogleApiClient.connect();
+            }
             mGoogleMap.setMyLocationEnabled(true);
         }
         LatLng start = new LatLng(55.9533, -3.1883);
@@ -167,6 +170,7 @@ public class MapsActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            mGoogleApiClient.connect();
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -174,55 +178,56 @@ public class MapsActivity extends AppCompatActivity
                     if (mCurrLocationMarker != null) {
                         mCurrLocationMarker.remove();
                     }
-
                     //Place current location marker
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng);
-                    markerOptions.title("Current Position");
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    //markerOptions.title("Current Position");
+                    //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                     mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
                     //move map camera
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
+                final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
+                for (final Marker m : markers) {
+                    LatLng loc = m.getPosition();
+                    Location markerLoc = new Location("markerLoc");
+                    markerLoc.setLatitude(loc.latitude);
+                    markerLoc.setLongitude(loc.longitude);
+                    LatLng current = mCurrLocationMarker.getPosition();
+                    Location currentLoc = new Location("current");
+                    currentLoc.setLongitude(current.longitude);
+                    currentLoc.setLatitude(current.latitude);
+                    //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
+                    if (mLastLocation.distanceTo(markerLoc) < 30) {
+                        m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.grnblank));
+                        //m.isGreen(true);
+                        //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
+                        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+                                Log.e("marker", "marker clicked");
+                                if (m.equals(marker)) {
+                                    marker.hideInfoWindow();
+                                    Log.e("word", marker.getTitle());
+                                    sendWord.putExtra("word", marker.getTitle());
+                                    m.remove();
+                                    markers.remove(m);
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                }
                 }
             });
         }
-        //Why the fuck is this not working??????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //Log.e("markers arraylist 2", markers.toString());
-        final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
-        for (Marker m : markers) {
-            Log.e("iterating through m", "here");
-            LatLng loc = m.getPosition();
-            Location markerLoc = new Location("markerLoc");
-            markerLoc.setLatitude(loc.latitude);
-            markerLoc.setLongitude(loc.longitude);
-            LatLng current = mCurrLocationMarker.getPosition();
-            Location currentLoc = new Location("current");
-            currentLoc.setLongitude(current.longitude);
-            currentLoc.setLatitude(current.latitude);
-            if (currentLoc.distanceTo(markerLoc) < 30) {
-                Log.e("comparing difference", "comparing difference");
-                mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    //measure distance of marker from current location
-                    //turn marker green
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        Log.e("getting here", "clicked");
-                        if (marker.equals(marker)) {
-                            Log.e("word", marker.getTitle());
-                            //marker.remove();
-                            sendWord.putExtra("word", marker.getTitle());
-                            marker.hideInfoWindow();
-                        }
-                        //pick up marker if close enough to current location
-                        return true;
-                    }
-                });
-            }
-        }
     }
+
+//    public boolean isGreen(Marker m) {
+//
+//    }
 
 
     @Override
@@ -282,7 +287,7 @@ public class MapsActivity extends AppCompatActivity
                                     .addOnConnectionFailedListener(this)
                                     .addApi(LocationServices.API)
                                     .build();
-                            //mGoogleApiClient.connect();
+                            mGoogleApiClient.connect();
                         }
                         mGoogleMap.setMyLocationEnabled(true);
                     }
@@ -331,27 +336,8 @@ public class MapsActivity extends AppCompatActivity
             Marker m = mGoogleMap.addMarker(new MarkerOptions().position(marker)
                     .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
             markers.add(m);
-            //Log.e("markers arraylist", markers.toString());
         }
     }
-
-//    //Don't know where to put this????
-//    public boolean inRange(Point p) {
-//        //comparing the current location to the placemarks
-//        Log.e("markers", "here");
-//        LatLng currentLoc = mCurrLocationMarker.getPosition();
-//        for (Marker m : markers) {
-//            LatLng loc = m.getPosition();
-//            if (distanceDiff(loc, currentLoc) > 30) {
-//                //m.remove();
-//                //Dunno what to do??
-//                Log.e("word", m.getTitle());
-//                return true;
-//            }
-//        }
-//        //dunno
-//        return false;
-//    }
 
     public int getIcon(Point p) {
         int output = 0;
@@ -367,46 +353,6 @@ public class MapsActivity extends AppCompatActivity
             output = R.drawable.redstars;
         }
         return output;
-    }
-
-//    public boolean inRange(Point p) {
-//        Log.e("last location", mLastLocation.toString());
-//        Location markerLoc = new Location("marker");
-//        String[] coords = new String[2];
-//        coords = p.coordinates.split(",");
-//        markerLoc.setLatitude(Double.parseDouble(coords[1]));
-//        markerLoc.setLongitude(Double.parseDouble(coords[0]));
-//        if (mLastLocation.distanceTo(markerLoc) < 30) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-//    Old distance method - delete?
-    public double distanceDiff(LatLng StartP, LatLng EndP) {
-        int Radius = 6371;// radius of earth in Km
-        double lat1 = StartP.latitude;
-        double lat2 = EndP.latitude;
-        double lon1 = StartP.longitude;
-        double lon2 = EndP.longitude;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        double valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Log.e("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec);
-
-        return Radius * c;
     }
 
     //assess whether guess is correct or not - not case sensitive

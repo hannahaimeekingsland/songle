@@ -18,6 +18,15 @@
         android:layout_alignBottom="@+id/bottom_navigation"
         android:text="@string/guessButton" />
 
+    <Button
+        android:id="@+id/wordList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="230dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/toWordList" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_bottom_navigation"
         android:layout_width="match_parent"
@@ -32,17 +41,5 @@
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|bottom">
-
-            <Button
-                android:id="@+id/mapButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="to settings!"/>
-        </LinearLayout>
 
 </fragment>

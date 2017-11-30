@@ -24,11 +24,12 @@ public class WordList extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
         word = getIntent().getStringExtra("word");
+        Log.e("word", word);
         words.add(word);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);
-        Log.e("words arraylist", words.toString());
+        //Log.e("words arraylist", words.toString());
     }
 
     @Override

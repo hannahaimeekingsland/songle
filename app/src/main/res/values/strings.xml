@@ -58,5 +58,6 @@
     <string name="quit">Quit</string>
     <string name="confirmQuit">Are you sure you would like to quit the current game? All data will be lost</string>
     <string name="random">random</string>
+    <string name="toWordList">Word List</string>
     />
 </resources>

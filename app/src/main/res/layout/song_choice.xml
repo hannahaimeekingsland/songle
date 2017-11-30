@@ -31,24 +31,18 @@
             android:id="@+id/relativelayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
+
+
             <Button
                 android:id="@+id/randomButton"
-                android:layout_width="110dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Random"
-                android:paddingStart="-18dp"
+                android:drawableRight="@drawable/random"
                 android:layout_gravity="center"
                 android:background="#cc6618" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignEnd="@+id/randomButton"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="12dp"
-                android:elevation="2dp"
-                app:srcCompat="@drawable/random" />
 
         </RelativeLayout>
 
