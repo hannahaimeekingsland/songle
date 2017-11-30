@@ -3,11 +3,14 @@ package com.example.hannah.songle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class SongChoice extends Activity {
     String lyricsURL = "";
     String KMLURL = "";
     String songName = "";
+    ArrayList<DownloadXml.Entry> output = new ArrayList<DownloadXml.Entry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,6 @@ public class SongChoice extends Activity {
         levelChoice = getIntent().getStringExtra("levelChoice");
         String XMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
         DownloadXml downloadXml = new DownloadXml();
-        ArrayList<DownloadXml.Entry> output = new ArrayList<DownloadXml.Entry>();
         downloadXml.execute(XMLURL);
         try {
             output = downloadXml.get();
@@ -48,23 +51,9 @@ public class SongChoice extends Activity {
         }
         Random rand = new Random();
         final int number = rand.nextInt(numButtons) + 1;
-        //Pass song title for use in Maps Activity
-        for (DownloadXml.Entry entry : output) {
-            String num;
-            if (number < 10) {
-                num = "0" + (String.valueOf(number));
-            } else {
-                num = String.valueOf(number);
-            }
-            if(num.equals(entry.number)) {
-                songName = entry.title;
-            }
-        }
-//        System.out.println(">>>>>>>>>>>>>>> song name:" + songName);
-//        Log.e("song name", songName);
-        intent.putExtra("songName", songName);
+
         //Handle KMLURL and lyrics for random instance
-        Button random = (Button) (findViewById(R.id.random));
+        Button random = (Button) (findViewById(R.id.randomButton));
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +71,6 @@ public class SongChoice extends Activity {
                 DownloadKml downloadKml = new DownloadKml();
                 ArrayList<DownloadKml.Point> result = new ArrayList<DownloadKml.Point>();
                 downloadKml.execute(KMLURL);
-                System.out.println(">>>>>>>>>>>>>>>>>>> executed KML");
                 try {
                     lyrics = downloadLyrics.get();
                     result = downloadKml.get();
@@ -91,76 +79,60 @@ public class SongChoice extends Activity {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
+//                Pass song title for use in Maps Activity
+//                For random instance
+                for (DownloadXml.Entry entry : output) {
+                    String num;
+                    if (number < 10) {
+                        num = "0" + (String.valueOf(number));
+                    } else {
+                        num = String.valueOf(number);
+                    }
+                    if(num.equals(entry.number)) {
+                        songName = entry.title;
+                    }
+                }
+                intent.putExtra("songName", songName);
                 //Log.e("result", result.toString());
                 intent.putExtra("lyrics", lyrics);
                 intent.putParcelableArrayListExtra("parsedKml", result);
                 startActivity(intent);
-                System.out.println(">>>>>>>>>>>>>>>>>>> sent parsedKml");
             }
         });
 
-//        for (int i = 1; i <= numButtons; i++) {
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT);
-//            Button btn = new Button(this);
-//            btn.setId(i);
-//            final int id_ = btn.getId();
-//            btn.setText("song" + id_);
-//            //What the fuck
-//            btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary, Resources.Theme.AppCompat.NoActionBar));
-//            linear.addView(btn, params);
-//            btn1 = ((Button) findViewById(id_));
-//            final int finalI = i;
-//            btn1.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-//                if (finalI < 10) {
-//                    //to put in SongChoice
-//                    //"http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number))
-//                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + finalI + levelChoice;
-//                } else {
-//                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalI + levelChoice;
-//
-//                }
-//                    Toast.makeText(view.getContext(),
-//                            "Button clicked index = " + id_, Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//            });
-//        }
-        LinearLayout layout = new LinearLayout(this);
-        for (int i = 1; i <= numButtons; i++) {
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT);
+        for (int j = 1; j < numButtons +1; j++) {
+            LinearLayout row = new LinearLayout(this);
+            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            LinearLayout layout = (LinearLayout) findViewById(R.id.linearlayout);
+            RelativeLayout rellayout = (RelativeLayout) findViewById(R.id.relativelayout);
+            rellayout.setGravity(Gravity.CENTER);
             Button btn = new Button(this);
-            btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            btn.setText("Song " + i);
-            btn.setId(i);
-            btn.setBackgroundColor(0xcc6618);
-            layout.addView(btn);
-            final int finalI = i;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            row.setGravity(Gravity.CENTER);
+            row.setPadding(0,40,0,0);
+            btn.setLayoutParams(params);
+            btn.setText("Song " + j);
+            btn.setId(j);
+            btn.setBackgroundColor(Color.parseColor("#cc6618"));
+            row.addView(btn);
+            final int finalJ = j;
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                if (finalI < 10) {
-                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + finalI + "/words.txt";
-                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + finalI + levelChoice;
+                if (finalJ < 10) {
+                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + finalJ + "/words.txt";
+                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + finalJ + levelChoice;
                 } else {
-                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalI + "/words.txt";
-                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalI + levelChoice;
+                    lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalJ + "/words.txt";
+                    KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalJ + levelChoice;
 
                 }
-                Toast.makeText(view.getContext(),
-                        "Button clicked index = " + finalI, Toast.LENGTH_SHORT)
-                        .show();
-                Log.e("KMLURL", KMLURL);
                 DownloadLyrics downloadLyrics = new DownloadLyrics();
                 String lyrics = "";
                 downloadLyrics.execute(lyricsURL);
                 DownloadKml downloadKml = new DownloadKml();
                 ArrayList<DownloadKml.Point> result = new ArrayList<DownloadKml.Point>();
                 downloadKml.execute(KMLURL);
-                System.out.println(">>>>>>>>>>>>>>>>>>> executed KML");
                 try {
                     lyrics = downloadLyrics.get();
                     result = downloadKml.get();
@@ -170,14 +142,24 @@ public class SongChoice extends Activity {
                     e.printStackTrace();
                 }
                 final Intent intent = new Intent(SongChoice.this, MapsActivity.class);
-                //Log.e("result", result.toString());
+                for (DownloadXml.Entry entry : output) {
+                    String num;
+                    if (finalJ < 10) {
+                        num = "0" + (String.valueOf(number));
+                    } else {
+                        num = String.valueOf(finalJ);
+                    }
+                    if(num.equals(entry.number)) {
+                        songName = entry.title;
+                    }
+                }
+                intent.putExtra("songName", songName);
                 intent.putExtra("lyrics", lyrics);
                 intent.putParcelableArrayListExtra("parsedKml", result);
                 startActivity(intent);
-                System.out.println(">>>>>>>>>>>>>>>>>>> sent parsedKml");
                 }
             });
+            layout.addView(row);
         }
-
     }
 }

@@ -87,7 +87,7 @@ public class MapsActivity extends AppCompatActivity
         }
         final Intent toSettings = new Intent(MapsActivity.this, SettingsScreen.class);
         Button mapsButton = (Button) findViewById(R.id.mapButton);
-        Log.e("mapsbutton", "clicked");
+        //Log.e("mapsbutton", "clicked");
         mapsButton.setVisibility(View.INVISIBLE);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +183,6 @@ public class MapsActivity extends AppCompatActivity
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                     mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-                    Log.e("zoom camera", "here");
                     //move map camera
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
@@ -191,7 +190,7 @@ public class MapsActivity extends AppCompatActivity
             });
         }
         //Why the fuck is this not working??????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Log.e("markers arraylist 2", markers.toString());
+        //Log.e("markers arraylist 2", markers.toString());
         final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
         for (Marker m : markers) {
             Log.e("iterating through m", "here");
@@ -332,7 +331,7 @@ public class MapsActivity extends AppCompatActivity
             Marker m = mGoogleMap.addMarker(new MarkerOptions().position(marker)
                     .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
             markers.add(m);
-            Log.e("markers arraylist", markers.toString());
+            //Log.e("markers arraylist", markers.toString());
         }
     }
 
