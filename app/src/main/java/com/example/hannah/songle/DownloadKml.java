@@ -118,7 +118,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     private ArrayList<DownloadKml.Point> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         ArrayList<DownloadKml.Point> points = new ArrayList<DownloadKml.Point>();
-        System.out.println(">>>>>>>>>>>>>>>>> in readFeed");
         parser.require(XmlPullParser.START_TAG, ns, "kml");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -128,7 +127,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             String name = parser.getName();
             // Starts by looking for the Placemark tag
             if (name.equals("Placemark")) {
-                System.out.println(">>>>>>>>>>>>>>>>> in readFeed4");
                 points.add(readPoint(parser));
             }
             else if(name.equals("Document")){
@@ -193,7 +191,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         String name = null;
         String description = null;
         String styleurl = null;
-        System.out.println(">>>>>>>>>>>>>>>>> readplacemark ");
         String coordinates = null;
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -201,16 +198,12 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             }
             String n = parser.getName();
             if (n.equals("name")) {
-                System.out.println(">>>>>>>>>>>>>>>>> readName ");
                 name = readName(parser);
             } else if (n.equals("description")) {
-                System.out.println(">>>>>>>>>>>>>>>>> readDescription ");
                 description = readDescription(parser);
             } else if (n.equals("styleUrl")) {
-                System.out.println(">>>>>>>>>>>>>>>>> readstyle ");
                 styleurl = readStyleurl(parser);
             } else if (n.equals("Point")) {
-                System.out.println(">>>>>>>>>>>>>>>>> readpoint");
                 coordinates = readP(parser);
             }
             else {
@@ -224,7 +217,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         parser.require(XmlPullParser.START_TAG, ns, "name");
         String name = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "name");
-        System.out.println(">>>>>>>>>>>>>>>>> readName " + name);
         return name;
     }
 
@@ -233,7 +225,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         parser.require(XmlPullParser.START_TAG, ns, "description");
         String description = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "description");
-        System.out.println(">>>>>>>>>>>>>>>>> readDescription " + description);
         return description;
     }
 
@@ -242,7 +233,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         parser.require(XmlPullParser.START_TAG, ns, "styleUrl");
         String styleurl = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "styleUrl");
-        System.out.println(">>>>>>>>>>>>>>>>> styleUrl " + styleurl);
         return styleurl;
     }
 
@@ -262,7 +252,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
                 skip(parser);
             }
         }
-        System.out.println(">>>>>>>>>>>>>>>>> coordinates " + coordinates);
         return coordinates;
     }
 

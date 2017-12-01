@@ -127,6 +127,7 @@ public class SongChoice extends Activity {
                     KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + finalJ + levelChoice;
 
                 }
+
                 DownloadLyrics downloadLyrics = new DownloadLyrics();
                 String lyrics = "";
                 downloadLyrics.execute(lyricsURL);
@@ -145,10 +146,11 @@ public class SongChoice extends Activity {
                 for (DownloadXml.Entry entry : output) {
                     String num;
                     if (finalJ < 10) {
-                        num = "0" + (String.valueOf(number));
+                        num = "0" + (finalJ);
                     } else {
                         num = String.valueOf(finalJ);
                     }
+                    Log.e("num", num);
                     if(num.equals(entry.number)) {
                         songName = entry.title;
                     }

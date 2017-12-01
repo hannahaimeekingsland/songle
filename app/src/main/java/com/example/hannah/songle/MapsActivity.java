@@ -95,6 +95,9 @@ public class MapsActivity extends AppCompatActivity
                 overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
             }
         });
+        songName = getIntent().getStringExtra("songName");
+        Log.e("song name", songName);
+        System.out.println(">>>>>>>>>>>>>>>" + songName);
 
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
@@ -102,8 +105,6 @@ public class MapsActivity extends AppCompatActivity
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         Log.e("lyrics", lyrics);
-        songName = getIntent().getStringExtra("songName");
-        Log.e("song name", songName);
 
     }
 
@@ -162,10 +163,8 @@ public class MapsActivity extends AppCompatActivity
         final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             public boolean onMarkerClick(Marker marker) {
-                Log.e("marker", "marker clicked");
-                Log.e("word in onclick", marker.getTitle());
                 marker.hideInfoWindow();
-                if (getTag(marker).equals("green")) {
+                if (marker.getTag().equals("green")) {
                     Log.e("word", marker.getTitle());
                     sendWord.putExtra("word", marker.getTitle());
                     marker.remove();
@@ -217,16 +216,13 @@ public class MapsActivity extends AppCompatActivity
                     //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
                     if (mLastLocation.distanceTo(markerLoc) < 30) {
                         m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.grnblank));
-                        m.setTag(new MarkerTag)
-                        //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
-
+                        m.setTag("green");
+                       }
                     }
-                }
                 }
             });
         }
     }
-
 
 
     @Override
@@ -299,7 +295,6 @@ public class MapsActivity extends AppCompatActivity
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -336,7 +331,7 @@ public class MapsActivity extends AppCompatActivity
                     .position(marker)
                     .title(lyric)
                     .icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
-            m.setTag(new MarkerTag);
+            m.setTag("not green");
             markers.add(m);
         }
     }
@@ -359,6 +354,7 @@ public class MapsActivity extends AppCompatActivity
 
     //assess whether guess is correct or not - not case sensitive
     public void guess(String inputText) {
+        Log.e("song name", songName);
         if (inputText.toLowerCase().equals(songName.toLowerCase())) {
             correctGuessPopup();
         } else {
@@ -467,10 +463,11 @@ public class MapsActivity extends AppCompatActivity
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 
-    private class MarkerTag {
-
-        public MarkerTag() {
-
-        }
-    }
+//    public class MarkerTag {
+//        private String tag;
+//
+//        public MarkerTag(String tag) {
+//
+//        }
+//    }
 }
