@@ -159,6 +159,22 @@ public class MapsActivity extends AppCompatActivity
         LatLng start = new LatLng(55.9533, -3.1883);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
 
+        final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            public boolean onMarkerClick(Marker marker) {
+                Log.e("marker", "marker clicked");
+                Log.e("word in onclick", marker.getTitle());
+                marker.hideInfoWindow();
+                if (getTag(marker).equals("green")) {
+                    Log.e("word", marker.getTitle());
+                    sendWord.putExtra("word", marker.getTitle());
+                    marker.remove();
+                    markers.remove(marker);
+                }
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -189,7 +205,6 @@ public class MapsActivity extends AppCompatActivity
                     //move map camera
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
-                final Intent sendWord = new Intent(MapsActivity.this, WordList.class);
                 for (final Marker m : markers) {
                     LatLng loc = m.getPosition();
                     Location markerLoc = new Location("markerLoc");
@@ -202,22 +217,9 @@ public class MapsActivity extends AppCompatActivity
                     //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
                     if (mLastLocation.distanceTo(markerLoc) < 30) {
                         m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.grnblank));
-                        //m.isGreen(true);
+                        m.setTag(new MarkerTag)
                         //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
-                        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                            @Override
-                            public boolean onMarkerClick(Marker marker) {
-                                Log.e("marker", "marker clicked");
-                                if (m.equals(marker)) {
-                                    marker.hideInfoWindow();
-                                    Log.e("word", marker.getTitle());
-                                    sendWord.putExtra("word", marker.getTitle());
-                                    m.remove();
-                                    markers.remove(m);
-                                }
-                                return true;
-                            }
-                        });
+
                     }
                 }
                 }
@@ -225,9 +227,6 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-//    public boolean isGreen(Marker m) {
-//
-//    }
 
 
     @Override
@@ -333,8 +332,11 @@ public class MapsActivity extends AppCompatActivity
                 lyric = lyricsMap.get(entry.name);
             }
             LatLng marker = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
-            Marker m = mGoogleMap.addMarker(new MarkerOptions().position(marker)
-                    .title(lyric).icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
+            Marker m = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(marker)
+                    .title(lyric)
+                    .icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
+            m.setTag(new MarkerTag);
             markers.add(m);
         }
     }
@@ -463,5 +465,12 @@ public class MapsActivity extends AppCompatActivity
         });
         pw.setOutsideTouchable(true);
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    }
+
+    private class MarkerTag {
+
+        public MarkerTag() {
+
+        }
     }
 }
