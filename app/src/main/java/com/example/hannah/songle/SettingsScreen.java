@@ -20,34 +20,54 @@ import android.widget.PopupWindow;
  */
 
 public class SettingsScreen extends Activity {
-    final Intent toMaps = new Intent(this, MapsActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.settings);
-        findViewById(R.id.quitButton).setOnClickListener(new SettingsScreen.HandleQuitClick());
+        final Intent toMaps = new Intent(this, MapsActivity.class);
+        findViewById(R.id.quitButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(toMaps);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
         findViewById(R.id.getHintButton).setOnClickListener(new SettingsScreen.HandleSettingsClick());
-        findViewById(R.id.resume).setOnClickListener(new SettingsScreen.HandleResumeClick());
+        findViewById(R.id.resume).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitPopup();
+            }
+        });
+
+        final Intent toWordList = new Intent(this, WordList.class);
+        Button wordList = (Button) findViewById(R.id.wordListIcon);
+        //Log.e("mapsbutton", "clicked");
+        wordList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(toWordList);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
+
+        Button mapsButton = (Button) findViewById(R.id.mapIcon);
+        //Log.e("mapsbutton", "clicked");
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(toMaps);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
     }
 
         // set a onclick listener for when the button gets clicked
     private class HandleSettingsClick implements View.OnClickListener {
         public void onClick(View arg0) {
             hintPopup();
-        }
-    }
-
-    private class HandleQuitClick implements View.OnClickListener {
-        public void onClick(View arg0) {
-            quitPopup();
-        }
-    }
-
-    private class HandleResumeClick implements View.OnClickListener {
-        public void onClick(View arg0) {
-            startActivity(toMaps);
         }
     }
 

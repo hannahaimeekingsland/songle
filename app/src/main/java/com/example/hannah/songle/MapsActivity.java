@@ -67,6 +67,8 @@ public class MapsActivity extends AppCompatActivity
     String songName = "";
     EditText mEdit;
     String input = "";
+    final int settingsScreen = 1;
+    final int wordList = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,26 +87,35 @@ public class MapsActivity extends AppCompatActivity
                     .build();
             mGoogleApiClient.connect();
         }
+        songName = getIntent().getStringExtra("songName");
+        points = getIntent().getParcelableArrayListExtra("parsedKml");
+        lyrics = getIntent().getStringExtra("lyrics");
+        //Log.e("lyrics", lyrics);
+
         final Intent toWordList = new Intent(this, WordList.class);
-        Button wordList = (Button) findViewById(R.id.wordList);
+        Button wordList = (Button) findViewById(R.id.wordListIcon);
         //Log.e("mapsbutton", "clicked");
         wordList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(toWordList);
+                startActivityForResult(toWordList, 2);
                 overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
             }
         });
-        songName = getIntent().getStringExtra("songName");
-        Log.e("song name", songName);
-        System.out.println(">>>>>>>>>>>>>>>" + songName);
+        final Intent toSettings = new Intent(this, SettingsScreen.class);
+        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
+        //Log.e("mapsbutton", "clicked");
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(toSettings, 1);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
+        //Log.e("song name", songName);
+        //System.out.println(">>>>>>>>>>>>>>>" + songName);
 
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
-
-        //Bundle extras = getIntent().getExtras();
-        points = getIntent().getParcelableArrayListExtra("parsedKml");
-        lyrics = getIntent().getStringExtra("lyrics");
-        Log.e("lyrics", lyrics);
 
     }
 
@@ -354,8 +365,10 @@ public class MapsActivity extends AppCompatActivity
 
     //assess whether guess is correct or not - not case sensitive
     public void guess(String inputText) {
+        //removes all punctuation from string besides apostrophes
+        String noPunct = songName.toLowerCase().replaceAll("[^\\w']+", "");
         Log.e("song name", songName);
-        if (inputText.toLowerCase().equals(songName.toLowerCase())) {
+        if (inputText.toLowerCase().equals(songName.toLowerCase()) || inputText.toLowerCase().equals(noPunct)) {
             correctGuessPopup();
         } else {
             incorrectGuessPopup();

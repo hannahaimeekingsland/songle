@@ -27,30 +27,41 @@
 
     <LinearLayout
         android:id="@+id/bottom_panel"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="442dp"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/mapIcon"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background=""
-            android:drawableRight="@drawable/map"/>
+            android:layout_weight="1"
+            android:background="#303030"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:drawableTop="@drawable/mapiconsmall" />
 
         <Button
+            android:id="@+id/wordListIcon"
             android:layout_width="0dip"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background=""
-            android:drawableRight="@drawable/wordlisticon"/>
+            android:background="#303030"
+            android:paddingTop="5dp"
+            android:drawableTop="@drawable/wordlistorange" />
 
         <Button
+            android:id="@+id/settingsIcon"
             android:layout_width="0dip"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="" />
+            android:background="#303030"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:drawableTop="@drawable/settingswheel" />
 
     </LinearLayout>
 

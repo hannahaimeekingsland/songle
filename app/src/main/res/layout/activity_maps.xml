@@ -27,19 +27,45 @@
         android:backgroundTint="@color/colorAccent"
         android:text="@string/toWordList" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <LinearLayout
+        android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/bottom_navigation" />
+        android:layout_below="@+id/guessButton"
+        android:layout_marginTop="600dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/mapIcon"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#303030"
+            android:paddingLeft="15dp"
+            android:elevation= "5dp"
+            android:paddingTop="10dp"
+            android:drawableTop="@drawable/mapiconorange" />
+
+        <Button
+            android:id="@+id/wordListIcon"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#303030"
+            android:paddingTop="10dp"
+            android:drawableTop="@drawable/wordlistsmall" />
+
+        <Button
+            android:id="@+id/settingsIcon"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#303030"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:drawableTop="@drawable/settingswheel" />
+
+    </LinearLayout>
 
 </fragment>

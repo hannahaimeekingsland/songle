@@ -1,11 +1,13 @@
 package com.example.hannah.songle;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,6 +35,26 @@ public class WordList extends ListActivity{
                 android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);
         //Log.e("words arraylist", words.toString());
+        final Intent toSettings = new Intent(this, SettingsScreen.class);
+        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
+        //Log.e("mapsbutton", "clicked");
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(toSettings);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
+        final Intent toMaps = new Intent(this, MapsActivity.class);
+        Button mapsButton = (Button) findViewById(R.id.mapIcon);
+        //Log.e("mapsbutton", "clicked");
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(toMaps);
+                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+            }
+        });
     }
 
     @Override
