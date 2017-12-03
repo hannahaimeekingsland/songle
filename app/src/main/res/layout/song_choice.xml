@@ -21,7 +21,7 @@
             android:layout_marginTop="33dp"
             android:layout_gravity="center"
             android:paddingBottom="20dp"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/fredoka_one_preview"
             android:text="@string/chooseSong"
             android:textColor="#FFFFFF"
             android:textSize="28sp"

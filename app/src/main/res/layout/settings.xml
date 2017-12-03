@@ -47,7 +47,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/fredoka_one_preview"
         android:text="@string/settings"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
@@ -57,7 +57,7 @@
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="515dp"
+        android:layout_marginTop="600dp"
         android:orientation="horizontal">
 
         <Button

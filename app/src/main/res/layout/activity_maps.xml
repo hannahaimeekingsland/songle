@@ -18,15 +18,6 @@
         android:layout_alignBottom="@+id/bottom_navigation"
         android:text="@string/guessButton" />
 
-    <Button
-        android:id="@+id/wordList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginTop="230dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/toWordList" />
-
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"

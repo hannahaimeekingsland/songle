@@ -21,16 +21,12 @@ import java.util.ArrayList;
 public class WordList extends ListActivity{
     //String word = "";
     ArrayList<String> words = new ArrayList<String>();
-    String word = getIntent().getStringExtra("word");
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
-        Log.e("word", word);
-        word = getIntent().getStringExtra("word");
-        Log.e("word", word);
-        words.add(word);
+        words = getIntent().getStringArrayListExtra("wordList");
+        System.out.println(">>>>>>>>>> word:" + words);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);

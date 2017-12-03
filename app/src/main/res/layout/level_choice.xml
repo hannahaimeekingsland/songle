@@ -78,7 +78,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/fredoka_one_preview"
         android:text="@string/chooseLevel"
         android:textSize="28sp"
         android:textStyle="bold"

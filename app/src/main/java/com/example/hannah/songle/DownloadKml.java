@@ -30,7 +30,6 @@ import javax.security.auth.login.LoginException;
 public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> implements Serializable {
     @Override
     protected ArrayList<Point> doInBackground(String... urls) {
-        //System.out.println(">>>>>>>>>>>>>> In doInBackground");
         try {
             return loadKmlFromNetwork(urls[0]);
         } catch (IOException e) {

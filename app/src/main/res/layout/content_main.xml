@@ -31,7 +31,7 @@
         android:layout_above="@+id/button2"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/fredoka_one_preview"
         android:text="@string/songleText"
         android:textSize="80sp"
         android:typeface="sans"

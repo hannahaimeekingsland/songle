@@ -1,7 +1,10 @@
 package com.example.hannah.songle;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,6 +24,8 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     static String TAG = "MainActivity";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +37,27 @@ public class MainActivity extends AppCompatActivity {
 
         final Intent intent = new Intent(MainActivity.this, LevelChoice.class);
         Button playButton = (Button) (findViewById(R.id.button2));
+
+//        if (!isOnline()) {
+//            playButton.setVisibility(View.GONE);
+//            Toast.makeText(this, "Songle cannot be played without an internet connection", Toast.LENGTH_LONG).show();
+//        }
+
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(intent);
             }
         });
-
     }
 
 
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnectedOrConnecting());
+    }
 }
 
 

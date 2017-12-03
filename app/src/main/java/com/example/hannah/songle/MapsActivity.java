@@ -65,10 +65,12 @@ public class MapsActivity extends AppCompatActivity
     ArrayList<Marker> markers = new ArrayList<>();
     String lyrics;
     String songName = "";
+    String word = "";
     EditText mEdit;
     String input = "";
     final int settingsScreen = 1;
-    final int wordList = 2;
+    final int wordListScreen = 2;
+    ArrayList<String> wordList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +95,12 @@ public class MapsActivity extends AppCompatActivity
         //Log.e("lyrics", lyrics);
 
         final Intent toWordList = new Intent(this, WordList.class);
-        Button wordList = (Button) findViewById(R.id.wordListIcon);
+        Button wordListButton = (Button) findViewById(R.id.wordListIcon);
         //Log.e("mapsbutton", "clicked");
-        wordList.setOnClickListener(new View.OnClickListener() {
+        wordListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                toWordList.putStringArrayListExtra("wordList", wordList);
                 startActivityForResult(toWordList, 2);
                 overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
             }
@@ -176,8 +179,9 @@ public class MapsActivity extends AppCompatActivity
             public boolean onMarkerClick(Marker marker) {
                 marker.hideInfoWindow();
                 if (marker.getTag().equals("green")) {
-                    Log.e("word", marker.getTitle());
-                    sendWord.putExtra("word", marker.getTitle());
+                    word = marker.getTitle();
+                    wordList.add(word);
+                    Log.e("word", word);
                     marker.remove();
                     markers.remove(marker);
                 }

@@ -13,7 +13,7 @@
         android:layout_alignBottom="@+id/musicnote2"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="36dp"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/fredoka_one_preview"
         android:text="@string/songleText"
         android:textSize="80sp"
         android:typeface="sans"
