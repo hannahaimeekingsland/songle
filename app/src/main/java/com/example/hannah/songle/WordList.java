@@ -26,7 +26,7 @@ public class WordList extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
         words = getIntent().getStringArrayListExtra("wordList");
-        System.out.println(">>>>>>>>>> word:" + words);
+        //System.out.println(">>>>>>>>>> word:" + words);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);

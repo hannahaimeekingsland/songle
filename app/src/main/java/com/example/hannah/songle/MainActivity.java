@@ -24,8 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     static String TAG = "MainActivity";
-
-
+    //uncomment toast
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(MainActivity.this, LevelChoice.class);
         Button playButton = (Button) (findViewById(R.id.button2));
 
-//        if (!isOnline()) {
-//            playButton.setVisibility(View.GONE);
-//            Toast.makeText(this, "Songle cannot be played without an internet connection", Toast.LENGTH_LONG).show();
-//        }
+        if (!isOnline()) {
+            playButton.setVisibility(View.GONE);
+            Toast.makeText(this, "Songle cannot be played without an internet connection", Toast.LENGTH_LONG).show();
+        }
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override

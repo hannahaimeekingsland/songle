@@ -14,7 +14,7 @@
         app:srcCompat="@drawable/cross" />
 
     <TextView
-        android:id="@+id/password"
+        android:id="@+id/buyQuestion"
         android:layout_width="217dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
@@ -27,6 +27,7 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/buyButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"

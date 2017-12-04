@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
@@ -23,7 +25,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -71,11 +75,33 @@ public class MapsActivity extends AppCompatActivity
     final int settingsScreen = 1;
     final int wordListScreen = 2;
     ArrayList<String> wordList = new ArrayList<>();
+    ArrayList<String> markerTitles = new ArrayList<>();
+    int amountMarkers;
+    int score = 0;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    ArrayList<String> markersToRemove = new ArrayList<>();
+    //fill this!!!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //Setting the score for the first time
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        editor.putInt("score", score);
+        editor.apply();
+
+        //Add TextView for score
+        TextView scoreStr = new TextView(this);
+        scoreStr.setText(Integer.valueOf(score));
+
+        LinearLayout layout = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layout.addView(scoreStr, lp);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -111,12 +137,12 @@ public class MapsActivity extends AppCompatActivity
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                toSettings.putStringArrayListExtra("markerTitles", markerTitles);
                 startActivityForResult(toSettings, 1);
                 overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
             }
         });
         //Log.e("song name", songName);
-        //System.out.println(">>>>>>>>>>>>>>>" + songName);
 
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
@@ -182,8 +208,11 @@ public class MapsActivity extends AppCompatActivity
                     word = marker.getTitle();
                     wordList.add(word);
                     Log.e("word", word);
+                    editor.putInt("score", preferences.getInt("score", 0)+1);
+                    editor.apply();
                     marker.remove();
                     markers.remove(marker);
+                    markerTitles.remove(marker.getTitle());
                 }
                 return true;
             }
@@ -308,7 +337,6 @@ public class MapsActivity extends AppCompatActivity
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
             // other 'case' lines to check for other
             // permissions this app might request
@@ -348,7 +376,9 @@ public class MapsActivity extends AppCompatActivity
                     .icon(BitmapDescriptorFactory.fromResource(getIcon(entry))));
             m.setTag("not green");
             markers.add(m);
+            markerTitles.add(m.getTitle());
         }
+        amountMarkers = markers.size();
     }
 
     public int getIcon(Point p) {
@@ -429,6 +459,19 @@ public class MapsActivity extends AppCompatActivity
 
 
     private void correctGuessPopup(){
+        int bonusScore = 0;
+        int currentAmount = markers.size();
+        if (amountMarkers*0.2 >= currentAmount) {
+            bonusScore = 30;
+        } else if (amountMarkers*0.2 < currentAmount && amountMarkers*0.4 >= currentAmount) {
+            bonusScore = 20;
+        } else if (amountMarkers*0.4 < currentAmount && amountMarkers*0.6 >= currentAmount) {
+            bonusScore = 10;
+        } else if (amountMarkers*0.6 < currentAmount && amountMarkers*0.8 >= currentAmount) {
+            bonusScore = 5;
+        } else {
+            bonusScore = 0;
+        }
         //We need to get the instance of the LayoutInflater, use the context of this activity
         LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
@@ -440,8 +483,11 @@ public class MapsActivity extends AppCompatActivity
         final PopupWindow pw = new PopupWindow(layout, (int)density*360, (int)density*150, true);
         //Button to close the pop-up
         final Intent toStart = new Intent(MapsActivity.this, MainActivity.class);
+        final int finalBonusScore = bonusScore;
         ((Button) layout.findViewById(R.id.mainMenuButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                editor.putInt("score", preferences.getInt("score", 0)+ finalBonusScore);
+                editor.apply();
                 startActivity(toStart);
             }
         });
@@ -480,11 +526,4 @@ public class MapsActivity extends AppCompatActivity
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 
-//    public class MarkerTag {
-//        private String tag;
-//
-//        public MarkerTag(String tag) {
-//
-//        }
-//    }
 }

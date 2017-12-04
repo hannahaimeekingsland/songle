@@ -79,8 +79,8 @@ public class SongChoice extends Activity {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-//                Pass song title for use in Maps Activity
-//                For random instance
+                //Pass song title for use in Maps Activity
+                //For random instance
                 for (DownloadXml.Entry entry : output) {
                     String num;
                     if (number < 10) {
