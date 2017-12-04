@@ -1,6 +1,7 @@
 package com.example.hannah.songle;
 
 import android.Manifest;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +14,17 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -95,12 +100,12 @@ public class MapsActivity extends AppCompatActivity
         editor.apply();
 
         //Add TextView for score
-        TextView scoreStr = new TextView(this);
-        scoreStr.setText(Integer.valueOf(score));
+//        TextView scoreStr = new TextView(this);
+//        scoreStr.setText(Integer.valueOf(score));
 
-        LinearLayout layout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout.addView(scoreStr, lp);
+//        LinearLayout layout = new LinearLayout(this);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        layout.addView(scoreStr, lp);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -119,29 +124,66 @@ public class MapsActivity extends AppCompatActivity
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         //Log.e("lyrics", lyrics);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
 
-        final Intent toWordList = new Intent(this, WordList.class);
-        Button wordListButton = (Button) findViewById(R.id.wordListIcon);
-        //Log.e("mapsbutton", "clicked");
-        wordListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toWordList.putStringArrayListExtra("wordList", wordList);
-                startActivityForResult(toWordList, 2);
-                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-            }
-        });
-        final Intent toSettings = new Intent(this, SettingsScreen.class);
-        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
-        //Log.e("mapsbutton", "clicked");
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toSettings.putStringArrayListExtra("markerTitles", markerTitles);
-                startActivityForResult(toSettings, 1);
-                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-            }
-        });
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment selectedFragment = null;
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        switch (item.getItemId()) {
+                            case R.id.bottom_navigation_map:
+                                if(getSupportFragmentManager().findFragmentByTag("fragment") != null) {
+                                    transaction.remove(getSupportFragmentManager().findFragmentByTag("fragment"));
+                                    transaction.commit();
+                                }
+                                break;
+                            case R.id.bottom_navigation_wordlist:
+                                findViewById(R.id.guessButton).setVisibility(View.GONE);
+                                selectedFragment = WordList.newInstance(wordList);
+                                transaction.replace(R.id.frame_layout, selectedFragment, "fragment");
+                                transaction.commit();
+                                break;
+                            case R.id.bottom_navigation_settings:
+                                findViewById(R.id.guessButton).setVisibility(View.GONE);
+                                selectedFragment = SettingsScreen.newInstance();
+                                transaction.replace(R.id.frame_layout, selectedFragment, "fragment");
+                                transaction.commit();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+        //Manually displaying the first fragment - one time only
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.frame_layout, bottomNavigationView.newInstance());
+//        transaction.commit();
+
+//        final Intent toWordList = new Intent(this, WordList.class);
+//        Button wordListButton = (Button) findViewById(R.id.wordListIcon);
+//        //Log.e("mapsbutton", "clicked");
+//        wordListButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                toWordList.putStringArrayListExtra("wordList", wordList);
+//                startActivityForResult(toWordList, 2);
+//                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+//            }
+//        });
+//        final Intent toSettings = new Intent(this, SettingsScreen.class);
+//        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
+//        //Log.e("mapsbutton", "clicked");
+//        settingsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                toSettings.putStringArrayListExtra("markerTitles", markerTitles);
+//                startActivityForResult(toSettings, 1);
+//                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
+//            }
+//        });
         //Log.e("song name", songName);
 
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
@@ -208,6 +250,7 @@ public class MapsActivity extends AppCompatActivity
                     word = marker.getTitle();
                     wordList.add(word);
                     Log.e("word", word);
+                    Log.e("word list", wordList.toString());
                     editor.putInt("score", preferences.getInt("score", 0)+1);
                     editor.apply();
                     marker.remove();
@@ -243,7 +286,7 @@ public class MapsActivity extends AppCompatActivity
                     markerOptions.position(latLng);
                     //markerOptions.title("Current Position");
                     //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                    mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+                    //mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
                     //move map camera
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
@@ -253,10 +296,10 @@ public class MapsActivity extends AppCompatActivity
                     Location markerLoc = new Location("markerLoc");
                     markerLoc.setLatitude(loc.latitude);
                     markerLoc.setLongitude(loc.longitude);
-                    LatLng current = mCurrLocationMarker.getPosition();
-                    Location currentLoc = new Location("current");
-                    currentLoc.setLongitude(current.longitude);
-                    currentLoc.setLatitude(current.latitude);
+//                    LatLng current = mCurrLocationMarker.getPosition();
+//                    Location currentLoc = new Location("current");
+//                    currentLoc.setLongitude(current.longitude);
+//                    currentLoc.setLatitude(current.latitude);
                     //Log.e("distance between", String.valueOf(mLastLocation.distanceTo(markerLoc)));
                     if (mLastLocation.distanceTo(markerLoc) < 30) {
                         m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.grnblank));

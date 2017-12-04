@@ -3,7 +3,9 @@ package com.example.hannah.songle;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,43 +20,58 @@ import java.util.ArrayList;
  * Created by s1518196 on 07/11/17.
  */
 
-public class WordList extends ListActivity{
+
+public class WordList extends ListFragment {
     //String word = "";
     ArrayList<String> words = new ArrayList<String>();
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.word_list);
-        words = getIntent().getStringArrayListExtra("wordList");
-        //System.out.println(">>>>>>>>>> word:" + words);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, words);
-        setListAdapter(adapter);
-        //Log.e("words arraylist", words.toString());
-        final Intent toSettings = new Intent(this, SettingsScreen.class);
-        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
-        //Log.e("mapsbutton", "clicked");
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(toSettings);
-                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-            }
-        });
-        final Intent toMaps = new Intent(this, MapsActivity.class);
-        Button mapsButton = (Button) findViewById(R.id.mapIcon);
-        //Log.e("mapsbutton", "clicked");
-        mapsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(toMaps);
-                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-            }
-        });
+    public static WordList newInstance(ArrayList<String> words) {
+        WordList wordListFragment = new WordList();
+        Bundle bundle = new Bundle();
+        Log.e("wordList", words.toString());
+        bundle.putStringArrayList("wordList", words);
+        wordListFragment.setArguments(bundle);
+        return wordListFragment;
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        words = getArguments().getStringArrayList("wordList");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        //words = getActivity().getIntent().getStringArrayListExtra("wordList");
+        //System.out.println(">>>>>>>>>> word:" + words);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, words);
+        setListAdapter(adapter);
+        //Log.e("words arraylist", words.toString());
+//        final Intent toSettings = new Intent(this, SettingsScreen.class);
+//        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
+//        //Log.e("mapsbutton", "clicked");
+//        settingsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(toSettings);
+//            }
+//        });
+//        final Intent toMaps = new Intent(this, MapsActivity.class);
+//        Button mapsButton = (Button) findViewById(R.id.mapIcon);
+//        //Log.e("mapsbutton", "clicked");
+//        mapsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(toMaps);
+//                overridePendingTransition(R.animator.right_slide_in, R.animator.right_slide_out);
+//            }
+//        });
+        return inflater.inflate(R.layout.word_list, container, false);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         String item = (String) getListAdapter().getItem(position);
     }
 
