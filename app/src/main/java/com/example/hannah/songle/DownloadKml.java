@@ -27,7 +27,7 @@ import javax.security.auth.login.LoginException;
  * Created by s1518196 on 01/11/17.
  */
 
-public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> implements Serializable {
+public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
     @Override
     protected ArrayList<Point> doInBackground(String... urls) {
         try {
@@ -52,9 +52,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8.name()));
         // Do something with stream e.g. parse as XML, build result
         result = parse(stream);
-        for(Point point : result){
-            Log.e("success", point.toString());
-        }
         return result;
     }
 
@@ -122,7 +119,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
-            Log.e("kml", parser.getName() + " past start tag");
+            //Log.e("kml", parser.getName() + " past start tag");
             String name = parser.getName();
             // Starts by looking for the Placemark tag
             if (name.equals("Placemark")) {
@@ -135,7 +132,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
                 skip(parser);
             }
         }
-        Log.e("points", points.toString());
+//        Log.e("points", points.toString());
         return points;
     }
 
@@ -244,7 +241,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
                 continue;
             }
             String n = parser.getName();
-            Log.e("coordinates", n);
+            //Log.e("coordinates", n);
             if (n.equals("coordinates")) {
                 coordinates = readText(parser);
             } else {

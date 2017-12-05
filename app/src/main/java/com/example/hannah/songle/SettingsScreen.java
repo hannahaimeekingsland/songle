@@ -1,34 +1,32 @@
 package com.example.hannah.songle;
 
-import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.Marker;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created by s1518196 on 29/10/17.
@@ -42,14 +40,18 @@ public class SettingsScreen extends Fragment {
     ArrayList<String> mtNoDuplicates = new ArrayList<>();
     ArrayList<String> markersToRemove = new ArrayList<>();
 
-    public static SettingsScreen newInstance() {
+    public static SettingsScreen newInstance(ArrayList<String> markerTitles) {
         SettingsScreen ssFragment = new SettingsScreen();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("markerTitles", markerTitles);
+        ssFragment.setArguments(bundle);
         return ssFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        markerTitles = getArguments().getStringArrayList("markerTitles");
     }
 
     @Override
@@ -64,36 +66,18 @@ public class SettingsScreen extends Fragment {
         //Get shared preferences for buying hint
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
-
-//        final Intent toWordList = new Intent(this, WordList.class);
-//        Button wordList = (Button) findViewById(R.id.wordListIcon);
-//        //Log.e("mapsbutton", "clicked");
-//        wordList.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(toWordList);
-//                overridePendingTransition(R.animator.right_slide_in, R.animator.right_slide_out);
-//            }
-//        });
-//
-//        Button mapsButton = (Button) findViewById(R.id.mapIcon);
-//        //Log.e("mapsbutton", "clicked");
-//        mapsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(toMaps);
-//                overridePendingTransition(R.animator.right_slide_in, R.animator.right_slide_out);
-//            }
-//        });
         return inflater.inflate(R.layout.settings, container, false);
     }
 
     public ArrayList<String> getRandomPlacemarks(ArrayList<String> mtNoDuplicates) {
         Random rand = new Random();
         int  n = rand.nextInt(mtNoDuplicates.size());
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             mtNoDuplicates.remove(mtNoDuplicates.get(n));
+            //this line is crashing
+            Log.e("markersToRemove", markersToRemove.toString());
             markersToRemove.add(mtNoDuplicates.get(n));
+            Log.e("markersToRemove", markersToRemove.toString());
         }
         return markersToRemove;
     }
@@ -106,9 +90,10 @@ public class SettingsScreen extends Fragment {
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        //final Intent toMaps = new Intent(this, MapsActivity.class);
+        final Intent toMaps = new Intent(getActivity(), MapsActivity.class);
+
         view.findViewById(R.id.getHintButton).setOnClickListener(new SettingsScreen.HandleSettingsClick());
-        view.findViewById(R.id.quitButton).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.goBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 quitPopup();
@@ -117,7 +102,13 @@ public class SettingsScreen extends Fragment {
         view.findViewById(R.id.resume).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Go to start
+                //Dismiss the fragment
+                Fragment selectedFragment = null;
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if(getActivity().getSupportFragmentManager().findFragmentByTag("fragment") != null) {
+                    transaction.remove(getActivity().getSupportFragmentManager().findFragmentByTag("fragment"));
+                    transaction.commit();
+                }
             }
         });
     }
@@ -138,16 +129,22 @@ public class SettingsScreen extends Fragment {
                 pw.dismiss();
             }
         });
+        final Intent toMaps = new Intent(getActivity(), MapsActivity.class);
         ((Button) layout.findViewById(R.id.buyButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (preferences.getInt("score", 0) >= 20 && mtNoDuplicates.size() >= 3) {
+                if (preferences.getInt("score", 0) >= 20 && mtNoDuplicates.size() >= 5) {
                     markersToRemove = getRandomPlacemarks(mtNoDuplicates);
+                    Log.e("markersToRemove", markersToRemove.toString());
+                    ((MapsActivity) getActivity()).removeMarkers(markersToRemove);
+//                    scoreStr.setText(preferences.getInt("score", 0) - 20);
                     editor.putInt("score", preferences.getInt("score", 0) - 20);
                     editor.apply();
-                } else if (preferences.getInt("score", 0) < 20 && mtNoDuplicates.size() >= 3){
+                    pw.dismiss();
+                    Log.e("success", "bought 5 words");
+                } else if (preferences.getInt("score", 0) < 20 && mtNoDuplicates.size() >= 5){
                     Toast.makeText(getActivity(), "You do not have enough points for this!", Toast.LENGTH_LONG).show();
                     //Handle if user does not have enough points for this
-                } else if (preferences.getInt("score", 0) >= 20 && mtNoDuplicates.size() < 3) {
+                } else if (preferences.getInt("score", 0) >= 20 && mtNoDuplicates.size() < 5) {
                     Toast.makeText(getActivity(), "You do not have enough markers left on the map for this!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getActivity(), "You cannot get a hint at this time, sorry!", Toast.LENGTH_LONG).show();
@@ -188,7 +185,7 @@ public class SettingsScreen extends Fragment {
                 pw.dismiss();
             }
         });
-        ((Button) layout.findViewById(R.id.quitButton)).setOnClickListener(new View.OnClickListener() {
+        ((Button) layout.findViewById(R.id.goBack)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(toMain);
             }

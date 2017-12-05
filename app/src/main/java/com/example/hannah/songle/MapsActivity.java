@@ -1,6 +1,7 @@
 package com.example.hannah.songle;
 
 import android.Manifest;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,7 +59,6 @@ import javax.security.auth.login.LoginException;
 
 import static com.example.hannah.songle.DownloadKml.*;
 
-
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -70,7 +70,7 @@ public class MapsActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    private ArrayList<DownloadKml.Point> points;
+    ArrayList<DownloadKml.Point> points;
     ArrayList<Marker> markers = new ArrayList<>();
     String lyrics;
     String songName = "";
@@ -85,7 +85,8 @@ public class MapsActivity extends AppCompatActivity
     int score = 0;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    ArrayList<String> markersToRemove = new ArrayList<>();
+//    ArrayList<String> markersToRemove = new ArrayList<>();
+    TextView scoreStr;
     //fill this!!!
 
     @Override
@@ -97,15 +98,12 @@ public class MapsActivity extends AppCompatActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         editor.putInt("score", score);
+        Log.e("score", String.valueOf(preferences.getInt("score", 0)));
         editor.apply();
 
         //Add TextView for score
-//        TextView scoreStr = new TextView(this);
-//        scoreStr.setText(Integer.valueOf(score));
-
-//        LinearLayout layout = new LinearLayout(this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        layout.addView(scoreStr, lp);
+        scoreStr = (TextView) findViewById(R.id.score);
+        scoreStr.setText(String.valueOf(preferences.getInt("score", 0)));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -121,6 +119,7 @@ public class MapsActivity extends AppCompatActivity
             mGoogleApiClient.connect();
         }
         songName = getIntent().getStringExtra("songName");
+        Log.e("song name", songName);
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         //Log.e("lyrics", lyrics);
@@ -136,19 +135,27 @@ public class MapsActivity extends AppCompatActivity
                         switch (item.getItemId()) {
                             case R.id.bottom_navigation_map:
                                 if(getSupportFragmentManager().findFragmentByTag("fragment") != null) {
+//                                    markersToRemove = getIntent().getStringArrayListExtra("markersToRemove");
+//                                    Log.e("markersToRemove (maps)", markersToRemove.toString());
+//                                    removeMarkers();
+                                    scoreStr.setText(String.valueOf(preferences.getInt("score", 0)));
+                                    findViewById(R.id.guessButton).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.score).setVisibility(View.VISIBLE);
                                     transaction.remove(getSupportFragmentManager().findFragmentByTag("fragment"));
                                     transaction.commit();
                                 }
                                 break;
                             case R.id.bottom_navigation_wordlist:
                                 findViewById(R.id.guessButton).setVisibility(View.GONE);
+                                findViewById(R.id.score).setVisibility(View.GONE);
                                 selectedFragment = WordList.newInstance(wordList);
                                 transaction.replace(R.id.frame_layout, selectedFragment, "fragment");
                                 transaction.commit();
                                 break;
                             case R.id.bottom_navigation_settings:
                                 findViewById(R.id.guessButton).setVisibility(View.GONE);
-                                selectedFragment = SettingsScreen.newInstance();
+                                findViewById(R.id.score).setVisibility(View.GONE);
+                                selectedFragment = SettingsScreen.newInstance(markerTitles);
                                 transaction.replace(R.id.frame_layout, selectedFragment, "fragment");
                                 transaction.commit();
                                 break;
@@ -161,34 +168,23 @@ public class MapsActivity extends AppCompatActivity
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.replace(R.id.frame_layout, bottomNavigationView.newInstance());
 //        transaction.commit();
-
-//        final Intent toWordList = new Intent(this, WordList.class);
-//        Button wordListButton = (Button) findViewById(R.id.wordListIcon);
-//        //Log.e("mapsbutton", "clicked");
-//        wordListButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toWordList.putStringArrayListExtra("wordList", wordList);
-//                startActivityForResult(toWordList, 2);
-//                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-//            }
-//        });
-//        final Intent toSettings = new Intent(this, SettingsScreen.class);
-//        Button settingsButton = (Button) findViewById(R.id.settingsIcon);
-//        //Log.e("mapsbutton", "clicked");
-//        settingsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toSettings.putStringArrayListExtra("markerTitles", markerTitles);
-//                startActivityForResult(toSettings, 1);
-//                overridePendingTransition  (R.animator.right_slide_in, R.animator.right_slide_out);
-//            }
-//        });
         //Log.e("song name", songName);
 
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 
     }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putBoolean("silentMode", mSilentMode);
+//
+//        // Commit the edits!
+//        editor.commit();
+//    }
 
     /*@Override
     public void onPause() {
@@ -201,6 +197,11 @@ public class MapsActivity extends AppCompatActivity
     }*/
 
     //Create onResume??
+
+    @Override
+    public void onBackPressed() {
+        backPressedPopup();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -249,9 +250,12 @@ public class MapsActivity extends AppCompatActivity
                 if (marker.getTag().equals("green")) {
                     word = marker.getTitle();
                     wordList.add(word);
-                    Log.e("word", word);
+//                    Log.e("word", word);
                     Log.e("word list", wordList.toString());
+                    Log.e("score", String.valueOf(score));
+                    Log.e("score", String.valueOf(preferences.getInt("score", 0)));
                     editor.putInt("score", preferences.getInt("score", 0)+1);
+                    scoreStr.setText(String.valueOf(preferences.getInt("score", 0)+1));
                     editor.apply();
                     marker.remove();
                     markers.remove(marker);
@@ -289,7 +293,7 @@ public class MapsActivity extends AppCompatActivity
                     //mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
                     //move map camera
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
 
                 for (final Marker m : markers) {
                     LatLng loc = m.getPosition();
@@ -440,6 +444,25 @@ public class MapsActivity extends AppCompatActivity
         return output;
     }
 
+    public void removeMarkers(ArrayList<String> markersToRemove) {
+        ArrayList<Marker> markerCopy = (ArrayList<Marker>)markers.clone();
+        if (markersToRemove != null) {
+            Log.e("markersToRemove (maps)", markerCopy.toString());
+            Log.e("markers", markers.toString());
+            for (Marker m : markerCopy) {
+                for (String t : markersToRemove) {
+                    if (m.getTitle().equals(t) && !(wordList.contains(t))) {
+                        wordList.add(t);
+                        m.remove();
+                        markers.remove(m);
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
     //assess whether guess is correct or not - not case sensitive
     public void guess(String inputText) {
         //removes all punctuation from string besides apostrophes
@@ -474,6 +497,7 @@ public class MapsActivity extends AppCompatActivity
             public void onClick(View v) {
                 input = (String) mEdit.getText().toString();
                 Log.e("input", input);
+                pw.dismiss();
                 guess(input);
             }
         });
@@ -497,6 +521,42 @@ public class MapsActivity extends AppCompatActivity
         });
         pw.setOutsideTouchable(true);
         // display the pop-up in the center
+        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    }
+
+    private void backPressedPopup(){
+        //We need to get the instance of the LayoutInflater, use the context of this activity
+        LayoutInflater inflater = (LayoutInflater) MapsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
+        View layout = inflater.inflate(R.layout.back_pressed,null);
+
+        //Get the devices screen density to calculate correct pixel sizes
+        float density=MapsActivity.this.getResources().getDisplayMetrics().density;
+        // create a focusable PopupWindow with the given layout and correct size
+        final PopupWindow pw = new PopupWindow(layout, (int)density*325, (int)density*250, true);
+        //Button to close the pop-up
+        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.e("close clicked", "clicked");
+                pw.dismiss();
+            }
+        });
+        ((Button) layout.findViewById(R.id.goBack)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MapsActivity.super.onBackPressed();
+            }
+        });
+        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+        pw.setOutsideTouchable(true);
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 
@@ -529,12 +589,17 @@ public class MapsActivity extends AppCompatActivity
         final int finalBonusScore = bonusScore;
         ((Button) layout.findViewById(R.id.mainMenuButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.e("score", String.valueOf(preferences.getInt("score", 0)));
                 editor.putInt("score", preferences.getInt("score", 0)+ finalBonusScore);
+                Log.e("score", String.valueOf(preferences.getInt("score", 0)+ finalBonusScore));
                 editor.apply();
                 startActivity(toStart);
             }
         });
         pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        pw.setOutsideTouchable(true);
+        pw.setTouchable(true);
+        pw.setBackgroundDrawable(new BitmapDrawable());
     }
 
     private void incorrectGuessPopup(){
@@ -553,6 +618,7 @@ public class MapsActivity extends AppCompatActivity
             public void onClick(View v) {
                 //startActivity(toStart);
                 pw.dismiss();
+                enableGuess();
             }
         });
         pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

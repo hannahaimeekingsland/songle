@@ -59,5 +59,7 @@
     <string name="confirmQuit">Are you sure you would like to quit the current game? All data will be lost</string>
     <string name="random">random</string>
     <string name="toWordList">Word List</string>
+    <string name="goBack">Are you sure you want to go back? The current game will be lost</string>
+    <string name="confirmBack">Go back</string>
     />
 </resources>

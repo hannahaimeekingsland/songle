@@ -25,6 +25,16 @@
             android:layout_alignBottom="@+id/bottom_navigation"
             android:text="@string/guessButton" />
 
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/bottom_navigation"
+            android:padding="10dp"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
     </FrameLayout>
 
 

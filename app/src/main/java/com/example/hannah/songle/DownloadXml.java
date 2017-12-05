@@ -25,7 +25,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
     @Override
     protected ArrayList<Entry> doInBackground(String... urls) {
-        //System.out.println(">>>>>>>>>>>>>> In doInBackground");
         try {
             return loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
@@ -38,7 +37,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     @Override
     protected void onPostExecute(ArrayList<Entry> result) {
         // Do something with result
-        //System.out.println(">>>>>>>>>>>>>> In onPostExecute");
     }
 
     //Method loadXmlFromNetwork, returns a string
@@ -113,7 +111,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
     private static ArrayList<DownloadXml.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         ArrayList<DownloadXml.Entry> entries = new ArrayList<DownloadXml.Entry>();
-        //System.out.println(">>>>>> WE ARE IN READFEED");
         parser.require(XmlPullParser.START_TAG, ns, "Songs");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -167,8 +164,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
                 number = readNumber(parser);
             } else {
                 skip(parser);
-                //System.out.println(">>>>>>>>>>>skipped in readEntry");
-
             }
         }
         return new DownloadXml.Entry(number, title, artist, link);
@@ -176,53 +171,53 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
 
     private static String readNumber(XmlPullParser parser) throws IOException, XmlPullParserException {
-        System.out.println(">>>>>>>>>>" + "readNumber");
+//        System.out.println(">>>>>>>>>>" + "readNumber");
         parser.require(XmlPullParser.START_TAG, ns, "Number");
         String number = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Number");
-        System.out.println(">>>>>>>>>>>number" + number);
+//        System.out.println(">>>>>>>>>>>number" + number);
         return number;
     }
 
     // Processes title tags in the feed.
     private static String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
-        System.out.println(">>>>>>>>>>" + "readTitle");
+//        System.out.println(">>>>>>>>>>" + "readTitle");
         parser.require(XmlPullParser.START_TAG, ns, "Title");
         String title = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Title");
-        System.out.println(">>>>>>>>>>>title" + title);
+//        System.out.println(">>>>>>>>>>>title" + title);
         return title;
     }
 
     // Processes link tags in the feed.
     private static String readLink(XmlPullParser parser) throws IOException, XmlPullParserException {
-        System.out.println(">>>>>>>>>>" + "readLink");
+//        System.out.println(">>>>>>>>>>" + "readLink");
         parser.require(XmlPullParser.START_TAG, ns, "Link");
         String link = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Link");
-        System.out.println(">>>>>>>>>>>Link" + link);
+//        System.out.println(">>>>>>>>>>>Link" + link);
         return link;
     }
 
     // Processes artist tags in the feed.
     private static String readArtist(XmlPullParser parser) throws IOException, XmlPullParserException {
-        System.out.println(">>>>>>>>>>" + "readArtist");
+//        System.out.println(">>>>>>>>>>" + "readArtist");
         parser.require(XmlPullParser.START_TAG, ns, "Artist");
         String artist = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "Artist");
-        System.out.println(">>>>>>>>>>>Artist" + artist);
+//        System.out.println(">>>>>>>>>>>Artist" + artist);
         return artist;
     }
 
     // For the tags title and artist, extracts their text values.
     private static String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
-        System.out.println(">>>>>>>>>>" + "readTitle");
+//        System.out.println(">>>>>>>>>>" + "readTitle");
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
             result = parser.getText();
             parser.nextTag();
         }
-        System.out.println(">>>>>>>>>>>result" + result);
+//        System.out.println(">>>>>>>>>>>result" + result);
         return result;
     }
 
