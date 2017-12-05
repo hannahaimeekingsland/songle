@@ -108,7 +108,8 @@ public class SongChoice extends Activity {
             RelativeLayout rellayout = (RelativeLayout) findViewById(R.id.relativelayout);
             rellayout.setGravity(Gravity.CENTER);
             Button btn = new Button(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            float density=SongChoice.this.getResources().getDisplayMetrics().density;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) density*130, LinearLayout.LayoutParams.WRAP_CONTENT);
             row.setGravity(Gravity.CENTER);
             row.setPadding(0,40,0,0);
             btn.setLayoutParams(params);

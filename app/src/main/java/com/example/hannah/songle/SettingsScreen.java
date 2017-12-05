@@ -71,7 +71,7 @@ public class SettingsScreen extends Fragment {
 
     public ArrayList<String> getRandomPlacemarks(ArrayList<String> mtNoDuplicates) {
         Random rand = new Random();
-        int  n = rand.nextInt(mtNoDuplicates.size());
+        int  n = rand.nextInt(mtNoDuplicates.size() - 1);
         for (int i = 0; i < 5; i++) {
             mtNoDuplicates.remove(mtNoDuplicates.get(n));
             //this line is crashing

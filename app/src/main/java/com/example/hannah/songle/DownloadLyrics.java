@@ -28,7 +28,6 @@ public class DownloadLyrics extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... urls) {
-        //System.out.println(">>>>>>>>>>>>>> In doInBackground");
         try {
             return loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
@@ -41,45 +40,21 @@ public class DownloadLyrics extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         // Do something with result
-        //System.out.println(">>>>>>>>>>>>>> In onPostExecute");
     }
 
     //Method loadXmlFromNetwork, returns a string
     private String loadXmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
-        //System.out.println(">>>>>>>>>>>>>> In loadXmlFromNetwork");
         //String result = "";
         //Log.e("urlString", urlString);
         String streamString = downloadUrl(urlString);
         InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8));
         Scanner sc = new Scanner(stream).useDelimiter("\\z");
-            if (sc.hasNext()) {
-                return sc.next();
-            } else {
-                return "";
-            }
-
-//        BufferedReader br = null;
-//        StringBuilder sb = new StringBuilder();
-//        String line;
-//        try {
-//            br = new BufferedReader(new InputStreamReader(stream));
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (br != null) {
-//                try {
-//                    br.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        result = sb.toString();
-//        return result;
+        if (sc.hasNext()) {
+            return sc.next();
+        } else {
+            return "";
+        }
     }
 
 

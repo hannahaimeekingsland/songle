@@ -26,7 +26,8 @@ public class LevelChoice extends Activity {
         Log.e("current class", "level choice");
 
         final Intent intent = new Intent(LevelChoice.this, SongChoice.class);
-        //intent.putExtra("parsedKml", getIntent().getExtras().getParcelableArrayList("parsedKml"));
+
+        //Send relevant map number to SongChoice depending on button click
         Button amateurButton = (Button) (findViewById(R.id.button4));
         amateurButton.setOnClickListener(new View.OnClickListener() {
             @Override

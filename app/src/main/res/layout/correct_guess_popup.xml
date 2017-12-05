@@ -1,8 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#C0000000"
     >
 
@@ -10,10 +10,9 @@
         android:id="@+id/password"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_above="@+id/mainMenuButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="@string/correctGuess"
@@ -23,9 +22,58 @@
         android:id="@+id/mainMenuButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center|bottom"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/mainMenu" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/password"
+        android:layout_marginBottom="12dp"
+        android:layout_toStartOf="@+id/mainMenuButton"
+        app:srcCompat="@drawable/musicnote2" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/password"
+        android:layout_toStartOf="@+id/password"
+        android:rotation="20"
+        app:srcCompat="@drawable/musicnote1" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/password"
+        android:layout_toEndOf="@+id/mainMenuButton"
+        android:rotation="-20"
+        app:srcCompat="@drawable/musicnote1" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/imageView4"
+        android:layout_toEndOf="@+id/mainMenuButton"
+        android:rotation="-10"
+        app:srcCompat="@drawable/trebleclef" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/imageView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:rotation="-10"
+        app:srcCompat="@drawable/musicnote2" />
+
+
+
+</RelativeLayout>

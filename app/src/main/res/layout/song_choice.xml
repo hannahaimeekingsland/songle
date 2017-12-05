@@ -32,23 +32,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-
-
             <Button
                 android:id="@+id/randomButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Random"
                 android:drawableRight="@drawable/random"
+                android:drawablePadding="-2dp"
                 android:layout_gravity="center"
                 android:background="#cc6618" />
 
         </RelativeLayout>
 
     </LinearLayout>
-
-
-
 
 </ScrollView>
