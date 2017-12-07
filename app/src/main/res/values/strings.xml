@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Songle</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Songle</string>
     <string name="playButton">Play</string>
     <string name="amateurButton">Amateur</string>
     <string name="gstButton">Getting Started</string>

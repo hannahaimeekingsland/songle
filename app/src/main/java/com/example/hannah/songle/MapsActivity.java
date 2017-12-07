@@ -111,6 +111,7 @@ public class MapsActivity extends AppCompatActivity
         songName = getIntent().getStringExtra("songName");
         Log.e("song name", songName);
         points = getIntent().getParcelableArrayListExtra("parsedKml");
+        Log.e("points", points.toString());
         lyrics = getIntent().getStringExtra("lyrics");
         //Log.e("lyrics", lyrics);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -218,8 +219,8 @@ public class MapsActivity extends AppCompatActivity
             }
             mGoogleMap.setMyLocationEnabled(true);
         }
-        LatLng start = new LatLng(55.9533, -3.1883);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
+        LatLng start = new LatLng(55.9447, -3.1883);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 16));
 
         //When the marker is clicked, check the tag is 'green'
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -273,7 +274,7 @@ public class MapsActivity extends AppCompatActivity
                     //mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
                     //move map camera
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
 
                 for (final Marker m : markers) {
                     LatLng loc = m.getPosition();

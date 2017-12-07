@@ -43,14 +43,14 @@ public class SongChoice extends Activity {
         for (DownloadXml.Entry entry : output) {
             numButtons = Integer.parseInt(entry.number);
         }
-        Random rand = new Random();
-        final int number = rand.nextInt(numButtons) + 1;
 
         //Handle KMLURL and lyrics for random instance
         Button random = (Button) (findViewById(R.id.randomButton));
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Random rand = new Random();
+                final int number = rand.nextInt(numButtons) + 1;
                 if (number < 10) {
                     lyricsURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + (String.valueOf(number)) + "/words.txt";
                     KMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/0" + Integer.parseInt(String.valueOf(number)) + levelChoice;

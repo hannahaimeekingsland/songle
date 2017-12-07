@@ -53,12 +53,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".WordCollectionPopup"
-            android:label="WordCollectionPopup"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".SettingsScreen"
             android:label="SettingsScreen"
             android:theme="@style/AppTheme.NoActionBar"
@@ -81,7 +75,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NetworkActivity"></activity>
     </application>
 
 </manifest>

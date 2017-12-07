@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
-    private static final String ns = null;
 
     @Override
     protected ArrayList<Entry> doInBackground(String... urls) {
@@ -43,7 +42,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         ArrayList<Entry> result = new ArrayList<Entry>();
         String streamString = downloadUrl(urlString);
         InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8));
-    // Do something with stream e.g. parse as XML, build result
+        // Do something with stream e.g. parse as XML, build result
         result = parse(stream);
         return result;
     }
@@ -56,12 +55,12 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         String result = null;
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    // Also available: HttpsURLConnection
+        // Also available: HttpsURLConnection
         conn.setReadTimeout(10000);
         conn.setConnectTimeout(15000);
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
-    // Starts the query
+        // Starts the query
         conn.connect();
         try {
             result = readStream(conn.getInputStream(),2000000);
@@ -73,7 +72,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         return result;
     }
 
-    private String readStream(InputStream stream, int maxReadSize)
+    public String readStream(InputStream stream, int maxReadSize)
             throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");
@@ -90,7 +89,10 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         return buffer.toString();
     }
 
-    private static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
+    private static final String ns = null;
+    public static final String unique = "xml";
+
+    public static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         //System.out.println(">>>>>>> We are in parse");
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -104,7 +106,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     }
 
     private static ArrayList<DownloadXml.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<DownloadXml.Entry> entries = new ArrayList<>();
+        ArrayList<DownloadXml.Entry> entries = new ArrayList<DownloadXml.Entry>();
         parser.require(XmlPullParser.START_TAG, ns, "Songs");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -121,11 +123,11 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         return entries;
     }
 
-    static class Entry {
-        final String title;
-        final String link;
-        final String number;
-        final String artist;
+    public static class Entry {
+        public final String title;
+        public final String link;
+        public final String number;
+        public final String artist;
 
         private Entry(String number, String title, String artist, String link) {
             this.number = number;

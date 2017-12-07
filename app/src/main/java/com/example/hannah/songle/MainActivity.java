@@ -1,10 +1,12 @@
 package com.example.hannah.songle;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        requestPermission();
         //NetworkActivity.DownloadXmlTask download = new NetworkActivity.DownloadXmlTask();
 
         final Intent intent = new Intent(MainActivity.this, LevelChoice.class);
@@ -36,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void requestPermission() {
+        //Function to request permission
+        try {
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            ActivityCompat.requestPermissions(this, permissions, 1);
+        } catch(SecurityException e) {
+        /*Catch any Security Exceptions*/
+        }
     }
 
     //Check for connection to the Internet

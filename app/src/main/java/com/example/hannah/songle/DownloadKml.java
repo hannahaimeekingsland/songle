@@ -20,9 +20,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
-    private static final String ns = null;
 
+public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
     @Override
     protected ArrayList<Point> doInBackground(String... urls) {
         try {
@@ -75,7 +74,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         return result;
     }
 
-    private String readStream(InputStream stream, int maxReadSize)
+    public String readStream(InputStream stream, int maxReadSize)
             throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");
@@ -92,7 +91,10 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         return buffer.toString();
     }
 
-    private ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
+    private static final String ns = null;
+    public static String unique = "kml";
+
+    public ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -116,7 +118,10 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             // Starts by looking for the Placemark tag
             if (name.equals("Placemark")) {
                 points.add(readPoint(parser));
-            } else {
+            }
+            else if(name.equals("Document")){
+            }
+            else {
                 Log.e("skip", name);
                 skip(parser);
             }
@@ -127,10 +132,10 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     public static class Point implements Parcelable{
         //variables here
-        final String name;
-        final String description;
-        final String styleurl;
-        final String coordinates;
+        public final String name;
+        public final String description;
+        public final String styleurl;
+        public final String coordinates;
 
         private Point(String name, String description, String styleurl, String coordinates) {
             this.name = name;
