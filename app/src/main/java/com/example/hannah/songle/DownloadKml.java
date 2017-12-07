@@ -21,6 +21,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
+    private static final String ns = null;
+
     @Override
     protected ArrayList<Point> doInBackground(String... urls) {
         try {
@@ -89,8 +91,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         }
         return buffer.toString();
     }
-
-    private static final String ns = null;
 
     private ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {

@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
+    private static final String ns = null;
 
     @Override
     protected ArrayList<Entry> doInBackground(String... urls) {
@@ -88,8 +89,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         }
         return buffer.toString();
     }
-
-    private static final String ns = null;
 
     private static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         //System.out.println(">>>>>>> We are in parse");
