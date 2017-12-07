@@ -7,16 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-
-/**
- * Created by s1518196 on 31/10/17.
- */
 
 public class LevelChoice extends Activity {
-    static String TAG = "LevelChoice";
     String levelChoice = "";
 
     @Override
@@ -28,7 +20,7 @@ public class LevelChoice extends Activity {
         final Intent intent = new Intent(LevelChoice.this, SongChoice.class);
 
         //Send relevant map number to SongChoice depending on button click
-        Button amateurButton = (Button) (findViewById(R.id.button4));
+        Button amateurButton = (findViewById(R.id.button4));
         amateurButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +30,7 @@ public class LevelChoice extends Activity {
             }
         });
 
-        Button gstButton = (Button) (findViewById(R.id.button5));
+        Button gstButton = (findViewById(R.id.button5));
         gstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +40,7 @@ public class LevelChoice extends Activity {
             }
         });
 
-        Button fcoButton = (Button) (findViewById(R.id.getHintButton));
+        Button fcoButton = (findViewById(R.id.getHintButton));
         fcoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +50,7 @@ public class LevelChoice extends Activity {
             }
         });
 
-        Button difficultButton = (Button) (findViewById(R.id.button7));
+        Button difficultButton = (findViewById(R.id.button7));
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +60,7 @@ public class LevelChoice extends Activity {
             }
         });
 
-        Button impossibleButton = (Button) (findViewById(R.id.button8));
+        Button impossibleButton = (findViewById(R.id.button8));
         impossibleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

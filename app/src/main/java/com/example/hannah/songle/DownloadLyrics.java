@@ -1,13 +1,8 @@
 package com.example.hannah.songle;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.util.Xml;
-
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +12,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Created by s1518196 on 28/11/17.
- */
 
 public class DownloadLyrics extends AsyncTask<String, Void, String> {
 
@@ -82,7 +73,7 @@ public class DownloadLyrics extends AsyncTask<String, Void, String> {
         return result;
     }
 
-    public String readStream(InputStream stream, int maxReadSize)
+    private String readStream(InputStream stream, int maxReadSize)
             throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,28 +14,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Marker;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
-/**
- * Created by s1518196 on 29/10/17.
- */
-
 public class SettingsScreen extends Fragment {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    ArrayList<String> markerTitles = new ArrayList<String>();
-    HashSet<String> markerTitlesSet = new HashSet<String>();
+    ArrayList<String> markerTitles = new ArrayList<>();
+    HashSet markerTitlesSet = new HashSet<String>();
     ArrayList<String> mtNoDuplicates = new ArrayList<>();
     ArrayList<String> markersToRemove = new ArrayList<>();
 
@@ -57,8 +46,6 @@ public class SettingsScreen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                       Bundle savedInstanceState) {
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //markerTitles = getIntent().getStringArrayListExtra("markerTitles");
         //getting rid of duplicate lyrics
         markerTitlesSet = new HashSet(markerTitles);
         mtNoDuplicates = new ArrayList<>(markerTitlesSet);
@@ -66,6 +53,8 @@ public class SettingsScreen extends Fragment {
         //Get shared preferences for buying hint
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = preferences.edit();
+        editor.apply();
+
         return inflater.inflate(R.layout.settings, container, false);
     }
 
@@ -74,7 +63,6 @@ public class SettingsScreen extends Fragment {
         int  n = rand.nextInt(mtNoDuplicates.size() - 1);
         for (int i = 0; i < 5; i++) {
             mtNoDuplicates.remove(mtNoDuplicates.get(n));
-            //this line is crashing
             Log.e("markersToRemove", markersToRemove.toString());
             markersToRemove.add(mtNoDuplicates.get(n));
             Log.e("markersToRemove", markersToRemove.toString());
@@ -90,8 +78,6 @@ public class SettingsScreen extends Fragment {
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        final Intent toMaps = new Intent(getActivity(), MapsActivity.class);
-
         view.findViewById(R.id.getHintButton).setOnClickListener(new SettingsScreen.HandleSettingsClick());
         view.findViewById(R.id.goBack).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,13 +110,12 @@ public class SettingsScreen extends Fragment {
         // create a focusable PopupWindow with the given layout and correct size
         final PopupWindow pw = new PopupWindow(layout, (int)density*295, (int)density*220, true);
         //Button to close the pop-up
-        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
+        (layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pw.dismiss();
             }
         });
-        final Intent toMaps = new Intent(getActivity(), MapsActivity.class);
-        ((Button) layout.findViewById(R.id.buyButton)).setOnClickListener(new View.OnClickListener() {
+        (layout.findViewById(R.id.buyButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (preferences.getInt("score", 0) >= 20 && mtNoDuplicates.size() >= 5) {
                     markersToRemove = getRandomPlacemarks(mtNoDuplicates);
@@ -180,12 +165,12 @@ public class SettingsScreen extends Fragment {
         // create a focusable PopupWindow with the given layout and correct size
         final PopupWindow pw = new PopupWindow(layout, (int)density*325, (int)density*250, true);
         //Button to close the pop-up
-        ((ImageView) layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
+        (layout.findViewById(R.id.closeButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pw.dismiss();
             }
         });
-        ((Button) layout.findViewById(R.id.goBack)).setOnClickListener(new View.OnClickListener() {
+        (layout.findViewById(R.id.goBack)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(toMain);
             }

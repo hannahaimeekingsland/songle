@@ -2,7 +2,6 @@ package com.example.hannah.songle;
 
 import android.Manifest;
 import android.app.ActionBar;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +13,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -32,7 +29,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,12 +47,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.security.auth.login.LoginException;
 
 import static com.example.hannah.songle.DownloadKml.*;
 
@@ -78,8 +70,6 @@ public class MapsActivity extends AppCompatActivity
     String word = "";
     EditText mEdit;
     String input = "";
-    final int settingsScreen = 1;
-    final int wordListScreen = 2;
     ArrayList<String> wordList = new ArrayList<>();
     ArrayList<String> markerTitles = new ArrayList<>();
     int amountMarkers;
@@ -123,8 +113,7 @@ public class MapsActivity extends AppCompatActivity
         points = getIntent().getParcelableArrayListExtra("parsedKml");
         lyrics = getIntent().getStringExtra("lyrics");
         //Log.e("lyrics", lyrics);
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set navigation through the Bottom Navigation view
         bottomNavigationView.setOnNavigationItemSelectedListener
@@ -170,6 +159,7 @@ public class MapsActivity extends AppCompatActivity
 //        transaction.replace(R.id.frame_layout, bottomNavigationView.newInstance());
 //        transaction.commit();
         //Log.e("song name", songName);
+
         //Set on click listener for the guess button
         findViewById(R.id.guessButton).setOnClickListener(new HandleClick());
 

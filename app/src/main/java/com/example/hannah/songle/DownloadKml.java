@@ -14,18 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-
-import javax.security.auth.login.LoginException;
-
-/**
- * Created by s1518196 on 01/11/17.
- */
 
 public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.Point>> {
     @Override
@@ -80,7 +73,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
         return result;
     }
 
-    public String readStream(InputStream stream, int maxReadSize)
+    private String readStream(InputStream stream, int maxReadSize)
             throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");
@@ -98,9 +91,8 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
     }
 
     private static final String ns = null;
-    public static String unique = "kml";
 
-    public ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
+    private ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -124,10 +116,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             // Starts by looking for the Placemark tag
             if (name.equals("Placemark")) {
                 points.add(readPoint(parser));
-            }
-            else if(name.equals("Document")){
-            }
-            else {
+            } else {
                 Log.e("skip", name);
                 skip(parser);
             }
@@ -138,10 +127,10 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     public static class Point implements Parcelable{
         //variables here
-        public final String name;
-        public final String description;
-        public final String styleurl;
-        public final String coordinates;
+        final String name;
+        final String description;
+        final String styleurl;
+        final String coordinates;
 
         private Point(String name, String description, String styleurl, String coordinates) {
             this.name = name;

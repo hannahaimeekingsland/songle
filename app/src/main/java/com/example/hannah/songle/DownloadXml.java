@@ -17,10 +17,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-/**
- * Created by s1518196 on 31/10/17.
- */
-
 public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.Entry>> {
 
     @Override
@@ -76,7 +72,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         return result;
     }
 
-    public String readStream(InputStream stream, int maxReadSize)
+    private String readStream(InputStream stream, int maxReadSize)
             throws IOException, UnsupportedEncodingException {
         Reader reader = null;
         reader = new InputStreamReader(stream, "UTF-8");
@@ -94,9 +90,8 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     }
 
     private static final String ns = null;
-    public static final String unique = "xml";
 
-    public static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
+    private static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         //System.out.println(">>>>>>> We are in parse");
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -110,7 +105,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     }
 
     private static ArrayList<DownloadXml.Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ArrayList<DownloadXml.Entry> entries = new ArrayList<DownloadXml.Entry>();
+        ArrayList<DownloadXml.Entry> entries = new ArrayList<>();
         parser.require(XmlPullParser.START_TAG, ns, "Songs");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -127,11 +122,11 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         return entries;
     }
 
-    public static class Entry {
-        public final String title;
-        public final String link;
-        public final String number;
-        public final String artist;
+    static class Entry {
+        final String title;
+        final String link;
+        final String number;
+        final String artist;
 
         private Entry(String number, String title, String artist, String link) {
             this.number = number;
