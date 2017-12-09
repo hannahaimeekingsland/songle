@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class SettingsScreen extends Fragment {
     HashSet markerTitlesSet = new HashSet<String>();
     ArrayList<String> mtNoDuplicates = new ArrayList<>();
     ArrayList<String> markersToRemove = new ArrayList<>();
+    TextView scoreStr;
 
     public static SettingsScreen newInstance(ArrayList<String> markerTitles) {
         SettingsScreen ssFragment = new SettingsScreen();
@@ -92,6 +94,7 @@ public class SettingsScreen extends Fragment {
                 Fragment selectedFragment = null;
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if(getActivity().getSupportFragmentManager().findFragmentByTag("fragment") != null) {
+                    getActivity().findViewById(R.id.score).setVisibility(View.VISIBLE);
                     transaction.remove(getActivity().getSupportFragmentManager().findFragmentByTag("fragment"));
                     transaction.commit();
                 }
