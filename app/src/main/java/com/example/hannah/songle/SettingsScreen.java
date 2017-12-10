@@ -62,8 +62,8 @@ public class SettingsScreen extends Fragment {
 
     public ArrayList<String> getRandomPlacemarks(ArrayList<String> mtNoDuplicates) {
         Random rand = new Random();
-        int  n = rand.nextInt(mtNoDuplicates.size() - 1);
         for (int i = 0; i < 5; i++) {
+            int  n = rand.nextInt(mtNoDuplicates.size() - 1);
             mtNoDuplicates.remove(mtNoDuplicates.get(n));
             Log.e("markersToRemove", markersToRemove.toString());
             markersToRemove.add(mtNoDuplicates.get(n));

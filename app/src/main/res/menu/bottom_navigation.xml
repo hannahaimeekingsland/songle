@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/bottom_navigation_map"
+        android:contentDescription=""
         android:icon="@drawable/map"
-        android:title="Map" />
+        android:title="Map"
+        tools:contentDescription="@string/Map" />
 
     <item
         android:id="@+id/bottom_navigation_wordlist"
+        android:contentDescription="@string/WordList"
         android:icon="@drawable/wordlisticon"
         android:title="Word List" />
 
     <item
         android:id="@+id/bottom_navigation_settings"
+        android:contentDescription="@string/Settings"
         android:icon="@drawable/wheel"
         android:title="Settings" />
 </menu>

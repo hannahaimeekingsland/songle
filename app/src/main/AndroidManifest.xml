@@ -41,20 +41,8 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".WordList"
-            android:label="WordList"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".LevelChoice"
             android:label="LevelChoice"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".SettingsScreen"
-            android:label="SettingsScreen"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>

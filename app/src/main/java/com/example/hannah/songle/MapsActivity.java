@@ -457,7 +457,8 @@ public class MapsActivity extends AppCompatActivity
     //Assess whether guess is correct or not - not case sensitive
     public void guess(String inputText) {
         //Removes all punctuation from string besides apostrophes
-        String noPunct = songName.toLowerCase().replaceAll("[^\\w']+", "");
+        String noPunct = songName.toLowerCase().replaceAll("[^\\w\\s']+", "");
+        Log.e("noPunct", noPunct);
         Log.e("song name", songName);
         if (inputText.toLowerCase().equals(songName.toLowerCase()) || inputText.toLowerCase().equals(noPunct)) {
             correctGuessPopup();

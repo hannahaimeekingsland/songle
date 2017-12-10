@@ -61,5 +61,8 @@
     <string name="toWordList">Word List</string>
     <string name="goBack">Are you sure you want to go back? The current game will be lost</string>
     <string name="confirmBack">Go back</string>
+    <string name="Map">bottom_navigation_map</string>
+    <string name="WordList">bottom_navigation_wordlist</string>
+    <string name="Settings">bottom_navigation_settings</string>
     />
 </resources>
