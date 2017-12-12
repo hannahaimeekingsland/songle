@@ -25,6 +25,7 @@ public class WordList extends ListFragment {
         return wordListFragment;
     }
 
+    //Get arraylist of collected words from MapsActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class WordList extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Uses an ArrayAdapter to show the words collected in the list view
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, words);
         setListAdapter(adapter);
         return inflater.inflate(R.layout.word_list, container, false);
@@ -45,7 +47,7 @@ public class WordList extends ListFragment {
     }
 
     /**** Method for Setting the Height of the ListView dynamically.
-     **** Hack to fix the issue of not showing all the items of the ListView
+     **** Fixes the issue of not showing all the items of the ListView
      **** when placed inside a ScrollView  ****/
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();

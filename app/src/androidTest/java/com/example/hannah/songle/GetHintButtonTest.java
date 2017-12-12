@@ -104,14 +104,6 @@ public class GetHintButtonTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.closeButton),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
-
     }
 
     private static Matcher<View> childAtPosition(

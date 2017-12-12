@@ -30,16 +30,15 @@ public class DownloadLyrics extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        // Do something with result
     }
 
-    //Method loadXmlFromNetwork, returns a string
+    //Method loadXmlFromNetwork, returns a String
     private String loadXmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
-        //String result = "";
         //Log.e("urlString", urlString);
         String streamString = downloadUrl(urlString);
         InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8));
+        // Build String from input string, using a delimiter for the end of the input
         Scanner sc = new Scanner(stream).useDelimiter("\\z");
         if (sc.hasNext()) {
             return sc.next();
@@ -49,7 +48,7 @@ public class DownloadLyrics extends AsyncTask<String, Void, String> {
     }
 
 
-    //Method downloadUrl, returns an input stream
+    // Method downloadUrl, returns a String
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
     private String downloadUrl(String urlString) throws IOException {

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Hide play button and show a Toast when no Internet connection
         if (!isOnline()) {
-            playButton.setVisibility(View.GONE);
+            playButton.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "Songle cannot be played without an internet connection", Toast.LENGTH_LONG).show();
         }
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
             ActivityCompat.requestPermissions(this, permissions, 1);
         } catch(SecurityException e) {
-        /*Catch any Security Exceptions*/
+        //Catch any Security Exceptions
         }
     }
 

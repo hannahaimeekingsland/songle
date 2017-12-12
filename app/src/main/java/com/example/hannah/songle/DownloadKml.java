@@ -35,10 +35,9 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
 
     @Override
     protected void onPostExecute(ArrayList<Point> result) {
-        // Do something with result
     }
 
-    //Method loadXmlFromNetwork, returns a string
+    //Method loadXmlFromNetwork, returns an ArrayList<Point>
     private ArrayList<Point> loadKmlFromNetwork(String urlString) throws
             XmlPullParserException, IOException {
         ArrayList<Point> result = new ArrayList<Point>();
@@ -50,7 +49,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
     }
 
 
-    //Method downloadUrl, returns an input stream
+    // Method downloadUrl, returns a String
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
     private String downloadUrl(String urlString) throws IOException {
@@ -92,7 +91,6 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
     }
 
     private static final String ns = null;
-    public static String unique = "kml";
 
     public ArrayList<Point> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
@@ -122,16 +120,15 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             else if(name.equals("Document")){
             }
             else {
-                Log.e("skip", name);
                 skip(parser);
             }
         }
-//        Log.e("points", points.toString());
+        //Log.e("points", points.toString());
         return points;
     }
 
     public static class Point implements Parcelable{
-        //variables here
+
         public final String name;
         public final String description;
         public final String styleurl;
@@ -144,6 +141,7 @@ public class DownloadKml extends AsyncTask<String, Void, ArrayList<DownloadKml.P
             this.coordinates = coordinates;
         }
 
+        // Implementation of Parcelable
         public int describeContents() {
             return 0;
         }

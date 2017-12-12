@@ -72,7 +72,7 @@ public class SettingsScreen extends Fragment {
         return markersToRemove;
     }
 
-        // set a onclick listener for when the button gets clicked
+        // Set an onclick listener for when the button gets clicked
     private class HandleSettingsClick implements View.OnClickListener {
         public void onClick(View arg0) {
             hintPopup();

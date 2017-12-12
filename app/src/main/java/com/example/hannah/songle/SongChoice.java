@@ -30,6 +30,7 @@ public class SongChoice extends Activity {
         setContentView(R.layout.song_choice);
         final Intent intent = new Intent(SongChoice.this, MapsActivity.class);
         levelChoice = getIntent().getStringExtra("levelChoice");
+        //Download XML from server
         String XMLURL = "http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml";
         DownloadXml downloadXml = new DownloadXml();
         downloadXml.execute(XMLURL);
@@ -40,11 +41,12 @@ public class SongChoice extends Activity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        //Determine number of buttons needed to correspond to each song
         for (DownloadXml.Entry entry : output) {
             numButtons = Integer.parseInt(entry.number);
         }
 
-        //Handle KMLURL and lyrics for random instance
+        //Handle KMLURL and lyrics url for random instance
         Button random = (Button) (findViewById(R.id.randomButton));
         random.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +96,8 @@ public class SongChoice extends Activity {
             }
         });
 
+        //Create dynamic buttons for the amount of songs in the XML song list
+        //Handle KMLurl and lyrics url for each hidden song title
         for (int j = 1; j < numButtons +1; j++) {
             LinearLayout row = new LinearLayout(this);
             row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -137,6 +141,7 @@ public class SongChoice extends Activity {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
+                //Pass title for use in MapsActivity
                 final Intent intent = new Intent(SongChoice.this, MapsActivity.class);
                 for (DownloadXml.Entry entry : output) {
                     String num;

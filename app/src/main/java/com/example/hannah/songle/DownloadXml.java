@@ -32,7 +32,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
 
     @Override
     protected void onPostExecute(ArrayList<Entry> result) {
-        // Do something with result
     }
 
     //Method loadXmlFromNetwork, returns a string
@@ -42,13 +41,12 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
         ArrayList<Entry> result = new ArrayList<Entry>();
         String streamString = downloadUrl(urlString);
         InputStream stream = new ByteArrayInputStream(streamString.getBytes(StandardCharsets.UTF_8));
-        // Do something with stream e.g. parse as XML, build result
         result = parse(stream);
         return result;
     }
 
 
-    //Method downloadUrl, returns an input stream
+    // Method downloadUrl, returns a String
     // Given a string representation of a URL, sets up a connection and gets
     // an input stream.
     private String downloadUrl(String urlString) throws IOException {
@@ -90,7 +88,6 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     }
 
     private static final String ns = null;
-    public static final String unique = "xml";
 
     public static ArrayList<DownloadXml.Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         //System.out.println(">>>>>>> We are in parse");
@@ -138,7 +135,7 @@ public class DownloadXml extends AsyncTask<String, Void, ArrayList<DownloadXml.E
     }
 
     // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them off
-// to their respective "read" methods for processing. Otherwise, skips the tag.
+    // to their respective "read" methods for processing. Otherwise, skips the tag.
     private static DownloadXml.Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "Song");
         String number = null;
